@@ -46,7 +46,10 @@ def main():
     args = ap.parse_args()
 
     rows = [json.loads(line) for line in open(args.file, encoding="utf-8")]
-    rows = [r for r in rows if r["t"] >= args.since]
+    # drop samples that are paused or missing data (e.g. while switching aircraft)
+    need = ("ias_kmh", "tas_kmh", "alt_m", "vs_ms", "air_w_ms", "bank_deg", "hdg_true", "weight_kg")
+    rows = [r for r in rows if r["t"] >= args.since and not r.get("paused")
+            and all(r.get(k) is not None for k in need)]
     print(f"{'start':>8} {'dur s':>5} {'IAS':>5} {'hdg':>4} {'air_w':>6} {'vs':>6} "
           f"{'dalt/s':>6} {'te/s':>6} {'sink(te)':>8} {'kg':>4} {'flap':>4}  wind")
     for s in segments(rows, args.min_sec, args.max_bank, args.ias_tol):
