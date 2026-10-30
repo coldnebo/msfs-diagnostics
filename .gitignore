@@ -13,3 +13,6 @@ __pycache__/
 
 # local config
 config.local.json
+
+# generated reports (rebuild with: python -m msfsdiag.analysis.report --all)
+reports/**/*.html

@@ -14,6 +14,7 @@ dependencies = []
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
+record = ["SimConnect>=0.4.26"]
 
 [tool.setuptools.dynamic]
 version = { attr = "msfsdiag.__version__" }

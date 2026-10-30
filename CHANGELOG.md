@@ -2,6 +2,20 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com); versions follow [semver](https://semver.org).
 
+## [0.3.0] - 2026-10-30
+
+### added
+
+- per-run HTML reports (`python -m msfsdiag.analysis.report`): lift vs climb vs polar prediction, track coloured by lift, steady-legs table, segment notes. self-contained and offline (vendored uPlot 1.6.30, MIT).
+- `msfsdiag.analysis`: polar loading and fitting with mass, bank and altitude corrections; total-energy climb rate; steady-leg detection.
+- DG-1000 20 m polar from the DG-1000S manual table; polars carry a valid speed range.
+- docs: `doc/GUIDE.md`, `doc/TELEMETRY.md`.
+
+### changed
+
+- analysis leaves out frozen sim (exact repeats without a pause event) and airbrake use.
+- `scripts/steady_segments.py` now uses `msfsdiag.analysis`.
+
 ## [0.2.0] - 2026-10-30
 
 ### added

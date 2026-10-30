@@ -1,39 +1,15 @@
-"""Find steady, straight stretches in a probe recording and average them.
+"""Print the steady legs of a recording, with polar predictions.
 
-A segment is steady when, for at least --min-sec seconds: airborne, not paused or
-slewing (IAS > 40 km/h), |bank| < --max-bank, and IAS stays within ±--ias-tol km/h
-of the segment's first sample.
+Same analysis as the HTML report's table (msfsdiag.analysis), as text.
 
-Per segment: mean IAS, mean air-mass vertical speed (AMBIENT WIND Y), mean aircraft
-vertical speed, and their difference. "implied sink" = air_w - vs is the sink rate
-the glider shows relative to the air; compare it with the polar at that IAS/weight.
-
-usage: python scripts/steady_segments.py data/raw/<file>.jsonl [--since <unix t>]
+usage: python scripts/steady_segments.py <run.jsonl> [--since <unix t>] [--min-sec 15] [--max-bank 10] [--ias-tol 10]
 """
 
 import argparse
-import json
 from datetime import datetime
-from statistics import mean
 
-
-def segments(rows, min_sec, max_bank, ias_tol):
-    seg = []
-    for r in rows:
-        ok = (
-            not r.get("on_ground")
-            and (r.get("ias_kmh") or 0) > 40
-            and abs(r.get("bank_deg") or 99) < max_bank
-            and (not seg or abs(r["ias_kmh"] - seg[0]["ias_kmh"]) <= ias_tol)
-        )
-        if ok:
-            seg.append(r)
-            continue
-        if seg and seg[-1]["t"] - seg[0]["t"] >= min_sec:
-            yield seg
-        seg = [r] if (r.get("ias_kmh") or 0) > 40 and abs(r.get("bank_deg") or 99) < max_bank else []
-    if seg and seg[-1]["t"] - seg[0]["t"] >= min_sec:
-        yield seg
+from msfsdiag.analysis import legs, polar, run
+from msfsdiag.config import load as load_config
 
 
 def main():
@@ -45,29 +21,14 @@ def main():
     ap.add_argument("--ias-tol", type=float, default=10)
     args = ap.parse_args()
 
-    rows = [json.loads(line) for line in open(args.file, encoding="utf-8")]
-    # drop samples that are paused or missing data (e.g. while switching aircraft)
-    need = ("ias_kmh", "tas_kmh", "alt_m", "vs_ms", "air_w_ms", "bank_deg", "hdg_true", "weight_kg")
-    rows = [r for r in rows if r["t"] >= args.since and not r.get("paused")
-            and all(r.get(k) is not None for k in need)]
-    print(f"{'start':>8} {'dur s':>5} {'IAS':>5} {'hdg':>4} {'air_w':>6} {'vs':>6} "
-          f"{'dalt/s':>6} {'te/s':>6} {'sink(te)':>8} {'kg':>4} {'flap':>4}  wind")
-    for s in segments(rows, args.min_sec, args.max_bank, args.ias_tol):
-        dur = s[-1]["t"] - s[0]["t"]
-        air_w = mean(r["air_w_ms"] for r in s)
-        vs = mean(r["vs_ms"] for r in s)
-        # altitude change over the segment: a cross-check on the VS simvar
-        dalt = (s[-1]["alt_m"] - s[0]["alt_m"]) / dur
-        # total-energy climb rate: altitude plus kinetic energy height, so speed
-        # traded for height (or the reverse) doesn't count as lift or sink
-        v0, v1 = s[0]["tas_kmh"] / 3.6, s[-1]["tas_kmh"] / 3.6
-        te = dalt + (v1 * v1 - v0 * v0) / (2 * 9.81) / dur
-        flaps = sorted({r.get("flap_idx") for r in s if r.get("flap_idx") is not None})
-        print(f"{datetime.fromtimestamp(s[0]['t']):%H:%M:%S} {dur:5.0f} "
-              f"{mean(r['ias_kmh'] for r in s):5.0f} {mean(r['hdg_true'] for r in s):4.0f} "
-              f"{air_w:6.2f} {vs:6.2f} {dalt:6.2f} {te:6.2f} {air_w - te:8.2f} "
-              f"{mean(r['weight_kg'] for r in s):4.0f} {','.join(f'{f:.0f}' for f in flaps) or '?':>4}  "
-              f"{mean(r['wind_dir'] for r in s):3.0f}/{mean(r['wind_kt'] for r in s):.0f}kt")
+    polars = polar.load_polars(load_config().data_dir / "polars")
+    r = run.load(args.file, polars)
+    rows = [x for x in r.rows if x["t"] >= args.since]
+    f = lambda v, n=2: "    -" if v is None else f"{v:5.{n}f}"
+    print(f"{'start':>8} {'dur s':>5} {'IAS':>4} {'bank':>4} {'air_w':>5} {'climb':>5} {'sink':>5} {'pred':>5} {'delta':>5}  kg  flap")
+    for g in legs.find_legs(rows, args.min_sec, args.max_bank, args.ias_tol):
+        print(f"{datetime.fromtimestamp(g.t0):%H:%M:%S} {g.dur_s:5.0f} {g.ias_kmh:4.0f} {g.bank_deg:4.0f} "
+              f"{f(g.air_w_ms)} {f(g.te_ms)} {f(g.sink_ms)} {f(g.pred_sink_ms)} {f(g.delta_ms)} {g.weight_kg:4.0f}  {g.flap}")
 
 
 if __name__ == "__main__":

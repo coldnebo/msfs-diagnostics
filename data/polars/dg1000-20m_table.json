@@ -1,0 +1,33 @@
+{
+  "aircraft": "DG-1000 (20 m)",
+  "match_titles": ["DG-1001", "DG-1000"],
+  "applies_to_sim": ["Asobo DG1001e Neo"],
+  "status": "table",
+  "status_note": "values copied from the manual's performance table (no chart reading). the DG-1000S is a proxy for the DG-1001E; measured sink came out ~0.1 m/s better.",
+  "source": {
+    "id": "dg1000s-fm-en",
+    "page": "PDF p.60, section 5.3.2 'Gliding performance', 20 m span (S = 17.53 m²)",
+    "read_on": "2026-10-30"
+  },
+  "conditions": "straight flight, MSL ISA, IAS",
+  "valid_ias_kmh": [70, 130],
+  "valid_note": "the table only gives min sink and best glide; the parabola overestimates sink well above best-glide speed.",
+  "curve": "each set has a min-sink point and a best-glide point; the curve is a parabola with its vertex at min sink. best-glide sink = V / (L/D).",
+  "sets": [
+    {
+      "mass_kg": 491, "wing_loading_kgm2": 28,
+      "min_sink": { "ias_kmh": 79, "sink_ms": 0.51 },
+      "points": [ { "ias_kmh": 93, "sink_ms": 0.563, "from": "best glide 45.9 at 93 km/h" } ]
+    },
+    {
+      "mass_kg": 614, "wing_loading_kgm2": 35,
+      "min_sink": { "ias_kmh": 88, "sink_ms": 0.56 },
+      "points": [ { "ias_kmh": 104, "sink_ms": 0.624, "from": "best glide 46.3 at 104 km/h" } ]
+    },
+    {
+      "mass_kg": 736, "wing_loading_kgm2": 42,
+      "min_sink": { "ias_kmh": 98, "sink_ms": 0.62 },
+      "points": [ { "ias_kmh": 120, "sink_ms": 0.715, "from": "best glide 46.6 at 120 km/h" } ]
+    }
+  ]
+}
