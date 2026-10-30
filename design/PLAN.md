@@ -22,6 +22,9 @@ we want to answer, with data:
 | H4 | vertical air is broken in general, not just thermals | ridge lift also missing in a controlled ridge test |
 | H5 | aircraft-specific (GotFriends) | DG1001e behaves normally, GotFriends gliders don't |
 | H0 | perception: lift works but is weaker or narrower than expected | small positive vertical air, consistent with the aircraft's response |
+| H6 | lift parameters are MSL-based, so high terrain (Andes) squashes or removes the convective layer | lift by height differs between low and high terrain with the same preset; cutoff at a fixed MSL altitude |
+
+status 2026-10-30 (Pennsylvania, see WORKLOG): H3 and H5 not supported. both gliders follow their polar in ridge, cloud and thermal lift. the "vanishing" visualization happens while lift is still present (display effect). H6 is the lead for the original Andes flights.
 
 ## decision tree
 

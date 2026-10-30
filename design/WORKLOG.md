@@ -2,6 +2,14 @@
 
 issues and caveats found while carrying out the plan. newest first.
 
+## 2026-10-30: phase 1 spike, default-weather thermals, and the Andes lead
+
+- **default Clear preset, Oct 30 noon**: weak thermal, reported lift up to ~+0.5 m/s for ~20 s. the panel attributed 4-6% of turbulence to thermals.
+- **default Clear preset, June 21 noon**: 88 s circling at 98 km/h, 26° bank: reported lift +1.37 m/s, total-energy climb +0.82, sink relative to air 0.55 vs 0.73 predicted (DG-1000S 0.62 × cos^-1.5 bank). panel attributed it to thermals.
+- **visualization vanishing ≠ lift vanishing**: on the SSC 093 cloud-lift climb, the thermal visualization disappeared while the vario (and `AMBIENT WIND Y`, ~+3 m/s) showed lift. the "thermal disappears as I approach" symptom looks like a display effect (visualization hidden near or inside the thermal), not missing lift.
+- **the in-game thermal visualization panel gives a finer breakdown of the lift source** than the dev turbulence panel. per the pilot, it lines up with what we measured.
+- **original problem flights were in the Andes, flying low.** hypothesis H6: some lift parameters (e.g. SSC cloud base "6,000 ft", thermal top) are set relative to MSL, so over high terrain (ground 3,000 m+) the convective layer is squashed or underground and thermals barely form. next test: same preset and glider in the Andes, lift-by-height profile, compared with Pennsylvania in both AGL and MSL.
+
 ## 2026-10-30: phase 1 spike, DG1001e ridge + first thermal tests
 
 sim: MSFS 2024 store version 1.9.21.0; SimConnect reports app "SunRise" 12.2.282174.999. aircraft: Asobo DG-1001-E Neo, 748 kg (full ballast), no flaps. recording `data/raw/2026-10-30_run03.jsonl` (also contains the end of an AS 33 session and the aircraft switch).
