@@ -1,0 +1,29 @@
+{
+  "tool": "simconnect_probe",
+  "tool_version": "0.1.0",
+  "sim": {
+    "app": "SunRise",
+    "version": "12.2.282174.999",
+    "simconnect": "12.2.0.0",
+    "store_version": "1.9.21.0"
+  },
+  "aircraft_title": "DG-1001-E Neo",
+  "mass_kg": 671,
+  "rate_hz": 2.1,
+  "note_times": "segment times are local wall clock (UTC-4). paused samples read AMBIENT WIND Y ~0; exclude them.",
+  "site": "near SPJE (Jaen, Peru), around 5.66-5.80 S, 78.77-78.83 W",
+  "segments": [
+    {
+      "from": "15:28:09",
+      "to": "15:33:11",
+      "weather": "SSC 185 Low Cu T10-14 W5",
+      "what": "valley leg ~1000 m AGL through a cumulus thermal (+2.9 m/s); then dive to the slope; W-wind slope sample 15:32:50-15:33:11 (sinking air)"
+    },
+    {
+      "from": "15:33:11",
+      "to": "15:37:50",
+      "weather": "SSC 169 Low Cu T10-14 E5",
+      "what": "same slope heading south, 120-400 m AGL, E wind: ridge lift +0.5 to +2.1 m/s"
+    }
+  ]
+}

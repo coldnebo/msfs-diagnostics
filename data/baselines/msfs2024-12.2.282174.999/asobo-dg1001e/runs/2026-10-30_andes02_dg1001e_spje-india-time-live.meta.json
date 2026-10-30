@@ -1,0 +1,48 @@
+{
+  "tool": "simconnect_probe",
+  "tool_version": "0.1.0",
+  "sim": {
+    "app": "SunRise",
+    "version": "12.2.282174.999",
+    "simconnect": "12.2.0.0",
+    "store_version": "1.9.21.0"
+  },
+  "aircraft_title": "DG-1001-E Neo",
+  "mass_kg": 671,
+  "rate_hz": 2.1,
+  "note_times": "segment times are local wall clock (UTC-4). paused samples read AMBIENT WIND Y ~0; exclude them.",
+  "site": "starts near SPJE; from ~15:39 India, 24.03-24.07 N, 72.18-72.21 E",
+  "fields_added": "sim_local_s, sim_zulu_s, sim_day_of_year, sim_time_of_day",
+  "segments": [
+    {
+      "from": "15:37:50",
+      "to": "15:39:30",
+      "weather": "SSC 169",
+      "what": "Andes slope, then flight change to India (nulls during load)"
+    },
+    {
+      "from": "15:40:17",
+      "to": "15:42:28",
+      "weather": "SSC 169 carried over, sim 12:13",
+      "what": "real-world ~01:10 local; cloud lift to +4.05 m/s"
+    },
+    {
+      "from": "15:43:40",
+      "to": "15:45:50",
+      "weather": "Live weather, sim time still 12:17",
+      "what": "lift mostly +0.1 to +0.3 m/s"
+    },
+    {
+      "from": "15:45:59",
+      "to": "15:47:17",
+      "weather": "Live weather + real time, sim 01:16 night",
+      "what": "0 to +0.35 m/s"
+    },
+    {
+      "from": "15:47:21",
+      "to": "end",
+      "weather": "SSC 169 applied on top of Live, sim clock -> 12:05",
+      "what": "lift back, building to +2 m/s within a minute"
+    }
+  ]
+}

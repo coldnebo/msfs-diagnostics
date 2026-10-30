@@ -2,6 +2,16 @@
 
 issues and caveats found while carrying out the plan. newest first.
 
+## 2026-10-30: phase 1 conclusion
+
+**summary: no lift regression found in MSFS 2024 (store 1.9.21.0 / SimConnect 12.2.282174.999). the problems reported after SU7 trace to setup, plus a misleading visualization.**
+
+- **live weather (India, real-world ~01:15)**: Live weather with the sim clock still at noon gave +0.1 to +0.3 m/s; Live + real time (sim 01:16, night) gave 0 to +0.35. applying SSC 169 on top reset the sim clock to 12:05 and the wind to the preset's, and lift came back within a minute (to +2 m/s and building). **an SSC preset fully replaces Live weather and real time; nothing carried over.** with Live weather, expect real-world conditions, including no convection at night.
+- **gliders**: GotFriends AS 33 Me and Asobo DG1001e matched their polars (to ~0.1-0.2 m/s) in ridge, cumulus and thermal lift, in Pennsylvania, Peru and India.
+- **causes found**: (1) AS 33 flap at index 6 (landing range) at high speed cost ~1 m/s; (2) Andes flights used a W wind on a slope flown from its lee side: sinking air instead of ridge lift.
+- **visualization**: the thermal visualization disappears while lift is still present, and the dev Atmospheric Turbulence overlay shows max colour over still air. neither is a reliable lift map.
+- **not tested**: MSL cloud base over terrain above ~1,800 m (H6); AS 33 Me in thermals; GotFriends Discus 2C at all.
+
 ## 2026-10-30: phase 1 spike, Andes (SPJE) and time-of-day tests
 
 recordings: `data/raw/2026-10-30_andes01_spje.jsonl` (SSC 185 → 169), `..._andes02_spje.jsonl` (sim clock fields added; ends in India). DG-1001-E Neo, 671 kg.
