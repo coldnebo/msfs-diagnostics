@@ -9,6 +9,18 @@ using following gliders:
 - GotFriends Discus 2C
 - Asobo DG1001e Neo
 
+## context
+
+- sim: MSFS 2024.
+- observed after SU7: thermals and ridge lift seem to no longer work.
+- with thermal visualization on and the SSC preset loaded, strong thermals are shown. flying towards them, they disappear and no effect on the glider is observed.
+- no "before" recordings exist. the baseline is physics (polars + measured air mass) and cross-aircraft comparison, not a pre-SU7 capture.
+- the Asobo DG1001e is the control: if it shows the same symptom as the GotFriends gliders, the issue is sim-wide rather than aircraft-specific.
+- dev mode is available for research where SimConnect can't give a definitive answer.
+- SSC preset: [Soaring Weather](https://flightsim.to/addon/56827/soaring-weather) on flightsim.to. record its version with every test.
+- scope: we measure the delta between predicted and actual behavior, not the cause. GotFriends gliders use custom physics (likely sensing the environment to generate their own forces), which may or may not be compatible with sim engine changes. the aim is data good enough for Asobo or GotFriends to investigate.
+- polar precision: not wind-tunnel precision, reasonable approximations are fine. but when points are read from a manual's chart, the points read are recorded once (with source and page) and reused by all analysis, so results don't jitter between re-readings.
+
 
 # method
 
@@ -31,7 +43,7 @@ the difference between predicted and actual should help to reveal whether there 
 
 * use a json property file for locations (i.e. Community folder)
 
-* use keyring wrapped in first call prompt for secrets, then write. subsequent calls use stored secrets.
+* if secrets are ever needed (none are expected), use keyring wrapped in first call prompt for secrets, then write. subsequent calls use stored secrets.
 
 * raw telemetry can be json or other easy format
 

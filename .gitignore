@@ -1,0 +1,15 @@
+# reference documents are copyrighted: catalog only, fetch with scripts/fetch_sources.py
+data/sources/**/*.pdf
+
+# raw telemetry recordings
+data/raw/*
+!data/raw/.gitkeep
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+
+# local config
+config.local.json
