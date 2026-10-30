@@ -2,6 +2,18 @@
 
 issues and caveats found while carrying out the plan. newest first.
 
+## 2026-10-30: phase 1 spike, Andes (SPJE) and time-of-day tests
+
+recordings: `data/raw/2026-10-30_andes01_spje.jsonl` (SSC 185 → 169), `..._andes02_spje.jsonl` (sim clock fields added; ends in India). DG-1001-E Neo, 671 kg.
+
+- **original Andes flights**: near SPJE (Jaén, Peru), SSC 187 with W wind, applied on top of Live weather, flown at real-world night, low along a slope heading south.
+- **valley cumulus, SSC 185 (Low Cu T10-14 W5)**: ~1,000 m AGL (1,630-1,775 m MSL, ground 640-760 m): lift built to +2.9 m/s; 153 s leg, sink relative to air 0.50 vs ~0.6.
+- **lee side confirmed**: same slope (ground 1,050-1,390 m), 120-400 m AGL. W wind (SSC 185): −0.4 to −1.4 m/s (sinking air). E wind (SSC 169, Low Cu T10-14 E5): +0.5 to +2.1 m/s, DG held or gained height at ~100 km/h. the W sample is short (~20 s, right after a dive). **the original "no lift, very low" is explained by flying the lee side of the slope.**
+- **sim clock vs real clock**: India 24.06 N 72.21 E, sim local 12:15 (day 301), real local ~01:10. lift up to +4.05 m/s (panel: clouds 17%), straight core leg 38 s at 90 km/h: air +3.61, TE climb +3.04, sink relative to air 0.57. **real-world night does not suppress lift when a preset sets the sim time.**
+- **dev overlay ≠ lift map**: in India the Atmospheric Turbulence overlay showed max-colour (purple) streaks almost everywhere while the panel read 0% on all sources and `AMBIENT WIND Y` ≈ 0.
+- **recorder**: survives loading a new flight; fields read null for a few samples during the load.
+- **untested**: Live-weather carry-over under an SSC preset (original setup); MSL cloud base over terrain above ~1,800 m (H6).
+
 ## 2026-10-30: phase 1 spike, default-weather thermals, and the Andes lead
 
 - **default Clear preset, Oct 30 noon**: weak thermal, reported lift up to ~+0.5 m/s for ~20 s. the panel attributed 4-6% of turbulence to thermals.
