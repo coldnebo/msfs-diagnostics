@@ -2,6 +2,21 @@
 
 issues and caveats found while carrying out the plan. newest first.
 
+## 2026-10-30: phase 1 spike, DG1001e ridge + first thermal tests
+
+sim: MSFS 2024 store version 1.9.21.0; SimConnect reports app "SunRise" 12.2.282174.999. aircraft: Asobo DG-1001-E Neo, 748 kg (full ballast), no flaps. recording `data/raw/2026-10-30_run03.jsonl` (also contains the end of an AS 33 session and the aircraft switch).
+
+- **site**: the DG flew a different ridge, ~125 km east of 79N (40.82 N, 76.54 W), and the thermal tests nearby.
+- **DG ridge (SSC 368, NW15)**: steady legs at ~100 km/h: sink relative to air 0.45-0.55 m/s vs 0.62 in the DG-1000S table (20 m, ~43 kg/m², 98 km/h). slightly better than the proxy manual; plausible for the neo winglets.
+- **thermals (SSC 093, Low Cu T4-8 NW5, cloud base ~6,000 ft)**:
+  - pass 1, straight at 100 km/h, 300-430 m AGL, pause markers: the visualized thermal vanished ~1.0 km before the point judged to be its centre. reported lift peaked at +0.9 m/s near where the visualization vanished; ~0 at the judged centre. dev-mode turbulence panel: thermals ≤3%. the DG followed the reported air correctly.
+  - pass 2, ~900 m AGL: straight entry built from 0 to +3.2 m/s over ~800 m; circling at 20-30° bank climbed +1.8 m/s vs +1.8 predicted (2.5 air − ~0.7 circling sink).
+  - pass 3, same thermal from 250 m AGL (after slew) to ~900 m AGL, 277 s: mean reported lift +2.77, total-energy climb +2.17, sink relative to air 0.59 vs 0.6. lift by AGL: 200-299 m +1.7, 300-399 +2.9, 400-599 +3.3, 700-899 +2.5-3.0, max +3.9.
+- **conclusion so far**: whenever SimConnect reports lift, both gliders (GotFriends AS 33 Me, Asobo DG) climb by it minus their own polar sink, to ~0.1 m/s. no sign of aircraft ignoring lift. thermal strength matches T4-8 (2-4 m/s) when found.
+- **open question**: whether the thermal visualization matches the air. pass 1 shows a ~1 km mismatch; needs repeats with positions.
+- **height hypothesis dropped**: pass 1's weak lift was not a height effect; pass 3 had ~+3 m/s from 300 m AGL.
+- **`AMBIENT WIND Y` reads ~0 while paused**; paused samples are excluded.
+
 ## 2026-10-30: phase 1 spike, first ridge test (AS 33 Me)
 
 setup: Bald Eagle Mountain from 79N, SSC 368 (Overcast T0 NW15, Soaring Weather v5.0.2), GotFriends AS 33 Me 18 m, 599 kg (full ballast). recordings: `data/raw/2026-10-30_ridge01_as33me.jsonl`, `..._ridge02_...` (local only). tools: `scripts/simconnect_probe.py`, `scripts/steady_segments.py`.
