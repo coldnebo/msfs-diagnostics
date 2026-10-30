@@ -2,6 +2,17 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com); versions follow [semver](https://semver.org).
 
+## [0.4.0] - 2026-10-30
+
+### added
+
+- polar comparison page `reports/polars.html` (built by `report --all`, or `python -m msfsdiag.analysis.polar_report`): per aircraft, the manual polar with every steady leg scaled to it, the gap per leg, and summary stats; across aircraft, predicted vs measured sink. inline SVG with hover details and a full table.
+- polars can name flap indices (`flap_index_names`) and say they have no flaps (`flaps: false`).
+
+### changed
+
+- run reports: airspeed and height are now two single-axis charts instead of one dual-axis chart.
+
 ## [0.3.0] - 2026-10-30
 
 ### added

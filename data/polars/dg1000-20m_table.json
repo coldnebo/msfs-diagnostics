@@ -11,6 +11,7 @@
   },
   "conditions": "straight flight, MSL ISA, IAS",
   "valid_ias_kmh": [70, 130],
+  "flaps": false,
   "valid_note": "the table only gives min sink and best glide; the parabola overestimates sink well above best-glide speed.",
   "curve": "each set has a min-sink point and a best-glide point; the curve is a parabola with its vertex at min sink. best-glide sink = V / (L/D).",
   "sets": [

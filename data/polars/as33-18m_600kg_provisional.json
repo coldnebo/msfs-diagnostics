@@ -13,6 +13,8 @@
   "flap": "valid only with the flap the flap range chart gives for the speed (same page): N at ~100-118 km/h, 2 at ~165-192 km/h, 1 above",
   "conditions": "straight flight, MSL ISA, IAS",
   "valid_ias_kmh": [95, 215],
+  "flap_index_names": { "4": "N", "6": "6, landing range" },
+  "flap_index_note": "FLAPS HANDLE INDEX in the GotFriends AS 33: 4 = N (confirmed in flight); 6 read 25°. other indices not yet mapped.",
   "curve": "least-squares parabola through the points.",
   "sets": [
     {

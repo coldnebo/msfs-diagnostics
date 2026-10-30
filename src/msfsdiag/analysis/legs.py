@@ -25,6 +25,8 @@ class Leg:
     pred_sink_ms: float     # polar, or None
     weight_kg: float
     flap: str
+    tas_kmh: float = 0.0
+    run: str = ""
 
     @property
     def dur_s(self):
@@ -72,4 +74,5 @@ def _summarize(s):
         pred_sink_ms=mean(preds) if len(preds) >= len(s) / 2 else None,
         weight_kg=mean(r["weight_kg"] for r in s),
         flap=",".join(map(str, flaps)) if flaps else "",
+        tas_kmh=mean(r["tas_kmh"] for r in s),
     )

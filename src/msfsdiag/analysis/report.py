@@ -159,6 +159,9 @@ def main(argv=None):
         built.append((out.resolve(), titles))
         print(f"{out}  ({len(run.rows)} samples, {len(legs)} steady legs)")
     if args.all:
+        from . import polar_report
+        out, groups = polar_report.build(cfg.reports_dir / "polars.html", cfg.data_dir / "baselines", polars)
+        print(f"{out}  ({sum(len(d['legs']) for d in groups.values())} legs)")
         _write_index(cfg.reports_dir.resolve(), built)
         print(cfg.reports_dir / "index.html")
 
@@ -169,7 +172,9 @@ INDEX = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 @media (prefers-color-scheme:dark){:root{--bg:#161615;--fg:#ecebe7;--mute:#9b9a95;--link:#8fb3f5}}
 body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif;max-width:900px;margin:32px auto;padding:0 16px}
 a{color:var(--link)}span{color:var(--mute);margin-left:8px}li{margin:6px 0}</style></head>
-<body><h1>Run reports</h1><ul>%%ITEMS%%</ul></body></html>"""
+<body><h1>Run reports</h1>
+<p><a href="polars.html">Polars vs measured</a> <span>every steady leg against the manual polars</span></p>
+<ul>%%ITEMS%%</ul></body></html>"""
 
 
 TEMPLATE = r"""<!doctype html>
@@ -237,6 +242,7 @@ button{font:inherit;color:var(--fg);background:var(--panel);border:1px solid var
     </div>
     <div id="c1"></div>
     <div id="c2"></div>
+    <div id="c3"></div>
     <div class="readout" id="readout"></div>
     <p class="note">Air = vertical air reported by the sim (AMBIENT WIND Y). Climb = the glider's total-energy climb rate.
       Predicted = air − polar sink (mass, bank and altitude corrected). Grey bands: paused or frozen; amber: slew; red: airbrakes.</p>
@@ -329,22 +335,24 @@ let ready = false;  // charts can fire cursor hooks while still being built
 o1.hooks = {setCursor: [u => ready && onCursor(u.cursor.idx)]};
 const u1 = new uPlot(o1, [D.t, D.s.air_w, D.s.te, D.s.pred], document.getElementById('c1'));
 
-const o2 = base(170);
-o2.scales.m = {};
-o2.series = [{},
-  {label: 'IAS km/h', stroke: css('--ias'), width: 1.2, value: (u,v) => f(v,0)},
-  {label: 'AGL m', stroke: css('--agl'), width: 1.2, scale: 'm', value: (u,v) => f(v,0)}];
-o2.axes = [o2.axes[0], {...o2.axes[1], label: 'km/h'},
-  {scale: 'm', side: 1, label: 'm AGL', stroke: css('--mute'), grid: {show: false}}];
-const u2 = new uPlot(o2, [D.t, D.s.ias, D.s.agl], document.getElementById('c2'));
+// one measure per chart: airspeed and height get their own charts, same time axis
+const o2 = base(130);
+o2.series = [{}, {label: 'IAS km/h', stroke: css('--ias'), width: 1.2, value: (u,v) => f(v,0)}];
+o2.axes[1].label = 'km/h';
+const u2 = new uPlot(o2, [D.t, D.s.ias], document.getElementById('c2'));
+const o3 = base(130);
+o3.series = [{}, {label: 'height above ground m', stroke: css('--agl'), width: 1.2, value: (u,v) => f(v,0)}];
+o3.axes[1].label = 'm AGL';
+const u3 = new uPlot(o3, [D.t, D.s.agl], document.getElementById('c3'));
+const charts = [u1, u2, u3];
 
-function zoom(a, b){ [u1,u2].forEach(u => u.setScale('x', {min: a, max: b})); if (ready) drawTrack(); }
+function zoom(a, b){ charts.forEach(u => u.setScale('x', {min: a, max: b})); if (ready) drawTrack(); }
 document.getElementById('reset').onclick = () => zoom(D.t[0], D.t[D.t.length-1]);
 // keep both charts' zoom together
-[u1,u2].forEach((u,i) => u.over.addEventListener('mouseup', () => setTimeout(() => {
-  const s = u.scales.x; const other = i ? u1 : u2; other.setScale('x', {min: s.min, max: s.max}); drawTrack(); }, 0)));
+charts.forEach(u => u.over.addEventListener('mouseup', () => setTimeout(() => {
+  const s = u.scales.x; charts.forEach(o => o !== u && o.setScale('x', {min: s.min, max: s.max})); drawTrack(); }, 0)));
 window.addEventListener('resize', () => { const w = document.getElementById('c1').clientWidth;
-  u1.setSize({width: w, height: 300}); u2.setSize({width: w, height: 170}); sizeTrack(); });
+  u1.setSize({width: w, height: 300}); u2.setSize({width: w, height: 130}); u3.setSize({width: w, height: 130}); sizeTrack(); });
 
 // readout
 const ro = document.getElementById('readout');

@@ -53,6 +53,13 @@ What's on the page:
 
 Same table as text: `python scripts/steady_segments.py <run.jsonl>`.
 
+### polars page
+
+`reports/polars.html` (built by `--all`) puts every steady leg from every baseline against the manual polars:
+
+- **All aircraft**: predicted vs measured sink. On the dashed line the glider does exactly what its polar says; the strip is ±0.15 m/s.
+- **Per aircraft**: the polar curve with each leg scaled to the polar's reference mass, straight flight and sea level, plus the gap per leg. Dots are coloured by flap setting. The stats give the median gap and its spread: a steady offset with small spread means the polar is a little off for this airframe, while scatter, or dots far above the curve, means something in the flight (flaps, technique) or the sim differs.
+
 ## polars
 
 `data/polars/*.json`, one per aircraft, matched to the sim's aircraft title by `match_titles`. See [data/README.md](../data/README.md) and the module docstring in `src/msfsdiag/analysis/polar.py` for the format and corrections (mass, bank, altitude). Points read from a chart are recorded once and reused; changing them is a deliberate, logged edit.

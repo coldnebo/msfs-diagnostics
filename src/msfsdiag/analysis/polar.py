@@ -63,6 +63,8 @@ class Polar:
     match_titles: tuple
     sets: tuple
     valid_ias_kmh: tuple = (0.0, 1e9)  # at the reference mass; scaled with mass like the curve
+    has_flaps: bool = True
+    flap_names: tuple = ()  # ((index str, name), ...)
 
     def matches(self, title: str) -> bool:
         return any(re.search(re.escape(m), title or "", re.I) for m in self.match_titles)
@@ -84,6 +86,18 @@ class Polar:
         return sink
 
 
+def to_reference(polar_set, ias_kmh, sink_ms, mass_kg, bank_deg=0.0, tas_kmh=None):
+    """Undo the corrections in Polar.sink: a measured (IAS, true sink) at some mass,
+    bank and altitude, as the equivalent straight-flight, sea-level point at the
+    set's reference mass. Returns (ias_kmh, sink_ms) on the set's own curve scale."""
+    s = sink_ms
+    if tas_kmh:
+        s *= ias_kmh / tas_kmh
+    s *= math.cos(math.radians(min(abs(bank_deg or 0.0), 75.0))) ** 1.5
+    f = math.sqrt(mass_kg / polar_set.mass_kg)
+    return ias_kmh / f, s / f
+
+
 def load_polar(path: Path) -> Polar:
     d = json.loads(Path(path).read_text(encoding="utf-8"))
     sets = []
@@ -96,7 +110,8 @@ def load_polar(path: Path) -> Polar:
         sets.append(PolarSet(st["mass_kg"], *_fit_parabola(pts)))
     valid = d.get("valid_ias_kmh")
     return Polar(d["aircraft"], Path(path), d.get("status", ""), tuple(d.get("match_titles", ())),
-                 tuple(sets), tuple(valid) if valid else (0.0, 1e9))
+                 tuple(sets), tuple(valid) if valid else (0.0, 1e9),
+                 d.get("flaps", True), tuple(d.get("flap_index_names", {}).items()))
 
 
 def load_polars(directory: Path) -> list:

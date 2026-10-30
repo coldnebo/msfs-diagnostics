@@ -39,6 +39,29 @@ def test_mass_bank_and_altitude_corrections(tmp_path):
     assert p.sink(90, 600, tas_kmh=99) == pytest.approx(0.66)
 
 
+def test_to_reference_undoes_sink_corrections(tmp_path):
+    p = write_polar(tmp_path, [{"mass_kg": 600, "min_sink": {"ias_kmh": 90, "sink_ms": 0.6},
+                                "points": [{"ias_kmh": 110, "sink_ms": 0.7}]}])
+    s = p.sink(150, 700, bank_deg=30, tas_kmh=165)
+    v_ref, s_ref = polar.to_reference(p.sets[0], 150, s, 700, bank_deg=30, tas_kmh=165)
+    assert s_ref == pytest.approx(p.sets[0].sink(v_ref))
+
+
+def test_polar_page_builds(tmp_path):
+    from msfsdiag.analysis import polar_report
+    runs = tmp_path / "baselines" / "x"
+    runs.mkdir(parents=True)
+    rows = [sample(i * 0.5, 1000 + 0.9 * i * 0.5, air_w=1.5, ias_kmh=100) for i in range(60)]
+    write_run(runs, rows, {"note": "flaps were at index 6 throughout"})
+    p = write_polar(tmp_path, [{"mass_kg": 600, "min_sink": {"ias_kmh": 100, "sink_ms": 0.6},
+                                "points": [{"ias_kmh": 120, "sink_ms": 0.7}]}])
+    out, groups = polar_report.build(tmp_path / "polars.html", tmp_path / "baselines", [p])
+    (leg,) = groups["Test"]["legs"]
+    assert polar_report.category(leg, p) == "flap index 6 (pilot note)"
+    page = out.read_text(encoding="utf-8")
+    assert "<svg" in page and "1 / 1" in page
+
+
 def test_valid_range(tmp_path):
     p = write_polar(tmp_path, [{"mass_kg": 600, "min_sink": {"ias_kmh": 90, "sink_ms": 0.6},
                                 "points": [{"ias_kmh": 110, "sink_ms": 0.7}]}], valid_ias_kmh=[70, 130])
