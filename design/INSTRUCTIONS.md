@@ -17,7 +17,8 @@ using following gliders:
 - no "before" recordings exist. the baseline is physics (polars + measured air mass) and cross-aircraft comparison, not a pre-SU7 capture.
 - the Asobo DG1001e is the control: if it shows the same symptom as the GotFriends gliders, the issue is sim-wide rather than aircraft-specific.
 - dev mode is available for research where SimConnect can't give a definitive answer.
-- SSC preset: [Soaring Weather](https://flightsim.to/addon/56827/soaring-weather) on flightsim.to. record its version with every test.
+- SSC preset: [Soaring Weather](https://flightsim.to/addon/56827/soaring-weather) on flightsim.to, v5.0.2 at the start of the investigation. record its version with every test.
+- ridge test site: Bald Eagle Mountain, PA, from Ridge Soaring Gliderport (FAA 79N).
 - scope: we measure the delta between predicted and actual behavior, not the cause. GotFriends gliders use custom physics (likely sensing the environment to generate their own forces), which may or may not be compatible with sim engine changes. the aim is data good enough for Asobo or GotFriends to investigate.
 - polar precision: not wind-tunnel precision, reasonable approximations are fine. but when points are read from a manual's chart, the points read are recorded once (with source and page) and reused by all analysis, so results don't jitter between re-readings.
 

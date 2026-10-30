@@ -70,8 +70,12 @@ goal: prove we can read what we need from MSFS 2024, and answer the key unknown.
 
 test protocol, written up in `doc/GUIDE.md`:
 
-- **ridge test** (deterministic, most repeatable): fixed ridge, fixed wind speed and direction set to blow onto the ridge, live weather off. fly a fixed track along the ridge.
-- **thermal test**: SSC preset, visualization on, fixed location and time. note the visualized thermal's position, fly straight through it, then circle at fixed bank. screen recording with sim time visible, to line up with telemetry.
+- **ridge test** (deterministic, most repeatable): Bald Eagle Mountain, PA, from Ridge Soaring Gliderport (FAA 79N). the ridge runs roughly SW–NE with its steep face to the NW (verify the axis on the in-sim map).
+  - weather: custom preset, live weather off, clear sky, thermals off, wind constant with altitude.
+  - track: from 79N, ~300 ft above the crest on the NW (windward) side, fly NE along the ridge 10–15 km at constant IAS, then return on the same line.
+  - runs: wind 315° / 20 kt (onto the face, lift expected); wind 045° / 20 kt (along the ridge, control, little or no lift); calm (control, also a still-air polar check).
+  - 3 runs per glider per wind case.
+- **thermal test**: SSC preset (Soaring Weather v5.0.2), visualization on, fixed location and time. note the visualized thermal's position, fly straight through it, then circle at fixed bank. screen recording with sim time visible, to line up with telemetry.
 - **still-air test**: calm preset, fixed speeds, for later polar comparison.
 - each test in all three gliders, at least three runs each.
 
@@ -100,8 +104,8 @@ this phase should answer questions 1–3 for the big symptom.
 ## needed from the user
 
 - **dev mode research** (most useful now): is there a weather/thermal debug view that lists thermal positions and strength? does it agree with the visualization? any SDK documentation of thermal simvars in 2024?
-- **SSC preset**: confirmed as [Soaring Weather](https://flightsim.to/addon/56827/soaring-weather). still needed: which preset(s) within it you use, and the installed version.
-- **a known good ridge**: a location where ridge lift worked reliably before SU7.
+- **SSC preset**: [Soaring Weather](https://flightsim.to/addon/56827/soaring-weather) v5.0.2. still needed: which preset(s) within it you use.
+- **ridge**: chosen, Bald Eagle Mountain / 79N (see phase 3).
 - **flight manuals**: found and cataloged in `data/sources/`. two are proxies; the originals aren't publicly hosted:
   - AS 33 Me manual (Schleicher, 01.11.2022). using the AS 33 Es manual meanwhile.
   - DG-1001E manual (DG Aviation, Dec 2022). using the DG-1000S manual meanwhile.
