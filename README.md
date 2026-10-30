@@ -29,7 +29,9 @@ Details in [design/WORKLOG.md](design/WORKLOG.md).
 
 ## examples
 
-[examples/](examples/) has the best reports from that investigation. Each is a single HTML file with its data and charts inside; download and open, no server needed. Start with [examples/index.html](examples/index.html), or see [examples/README.md](examples/README.md) for what each one shows.
+**Live: [coldnebo.github.io/msfs-diagnostics/examples](https://coldnebo.github.io/msfs-diagnostics/examples/)**
+
+[examples/](examples/) has the best reports from that investigation. Each is a single HTML file with its data and charts inside, so it also works downloaded and opened from disk, with no server. The folder's README explains what each one shows and how to read them.
 
 ![AS 33 Me ridge run](examples/img/as33me-ridge-flaps.png)
 

@@ -2,7 +2,9 @@
 
 Reports from the first investigation: after MSFS 2024 SU7, do thermals and ridge lift still reach gliders?
 
-Each `.html` file is self-contained: the recording, the analysis and the chart library are inside. GitHub shows HTML as source, so download the folder (or clone the repo) and open [index.html](index.html) in a browser. They work offline.
+**View them live: [coldnebo.github.io/msfs-diagnostics/examples](https://coldnebo.github.io/msfs-diagnostics/examples/)**
+
+Each `.html` file is self-contained: the recording, the analysis and the chart library are inside. They also work offline: download the folder (or clone the repo) and open [index.html](index.html) in a browser.
 
 Rebuild after changing the analysis: `python scripts/build_examples.py --screenshots`.
 
