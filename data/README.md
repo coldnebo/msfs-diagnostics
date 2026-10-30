@@ -38,7 +38,7 @@ the manufacturer polars are graphs, so `polars/*.json` will be digitized from th
 
 ## baselines
 
-a baseline is a measured result for one aircraft on one sim build: e.g. the still-air polar, or ridge/thermal test results. folders are named by the MSFS 2024 build string as shown in the sim (e.g. `msfs2024-1.x.y.0`), so results from different builds can be compared side by side. each baseline records the aircraft version and test conditions in its metadata.
+a baseline is a measured result for one aircraft on one sim build: e.g. the still-air polar, or ridge/thermal test results. folders are named by the build string SimConnect reports (e.g. `msfs2024-12.2.282174.999`; the recorder writes it to each run's `.meta.json`), so results from different builds can be compared side by side. the store version (e.g. 1.9.21.0) isn't available over SimConnect, so add it to the meta by hand as `sim.store_version`.
 
 ## polars
 
