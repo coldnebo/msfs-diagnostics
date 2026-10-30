@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "msfs-diagnostics"
+description = "SimConnect tools to record and analyze glider telemetry and performance in MSFS 2024."
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Larry Kyrala" }]
+requires-python = ">=3.11"
+dynamic = ["version"]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.setuptools.dynamic]
+version = { attr = "msfsdiag.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
