@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>msfs-diagnostics examples</title>
+<style>
+:root{--bg:#f9f9f7;--card:#fcfcfb;--fg:#0b0b0b;--mute:#52514e;--line:rgba(11,11,11,.10);--link:#2457b3}
+@media (prefers-color-scheme:dark){:root{--bg:#0d0d0d;--card:#1a1a19;--fg:#f0efec;--mute:#c3c2b7;--line:rgba(255,255,255,.10);--link:#8fb3f5}}
+body{background:var(--bg);color:var(--fg);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;margin:0}
+main{max-width:860px;margin:0 auto;padding:32px 16px 48px}
+h1{font-size:22px;margin:0 0 6px} p{color:var(--mute);margin:0 0 16px}
+a{color:var(--link)} .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 12px}
+.card h2{font-size:16px;margin:0 0 4px} .card p{margin:0}
+</style></head><body><main>
+<h1>msfs-diagnostics examples</h1>
+<p>Glider telemetry from MSFS 2024 (store 1.9.21.0), recorded over SimConnect and compared with each glider's
+published polar. Question: after SU7, do thermals and ridge lift still reach the glider? Answer from these runs: yes;
+the problems traced to setup. Each page is self-contained: data and charts inside, works offline.
+Built with msfsdiag 0.5.0.</p>
+<div class="card"><h2><a href="polars.html">Polars vs measured</a></h2><p>All 37 steady legs from every run against the manual polars, per aircraft and combined. Start here.</p></div>
+<div class="card"><h2><a href="dg1001e-ridge-and-thermals.html">DG-1001e: ridge, cumulus and thermals</a></h2><p>One 40-minute session in five weather setups. Ridge lift, cumulus lift and default thermals: the climb line tracks the polar prediction throughout. Includes the pass where the thermal visualization vanished ~1 km before its apparent centre (pause markers), and a climb from 250 m to 900 m above ground.</p></div>
+<div class="card"><h2><a href="as33me-ridge-flaps.html">AS 33 Me: ridge lift and the flap lesson</a></h2><p>Bald Eagle Mountain, PA. The first two minutes fly 175 km/h with the flap lever at 6 (landing range): the glider climbs ~1 m/s less than predicted, which looked like &#x27;lift not working&#x27;. After moving to flap N at ~110 km/h, climb and prediction overlap.</p></div>
+<div class="card"><h2><a href="dg1001e-andes-lee-side.html">DG-1001e: Andes slope, west wind vs east wind</a></h2><p>Near SPJE, Peru. The same slope with the original west wind is the lee side: −0.4 to −1.4 m/s of sinking air. Switching the preset to an east wind turns it into ridge lift of +0.5 to +2.1 m/s. This explained the &#x27;no lift, very low&#x27; flights that started the investigation.</p></div>
+<div class="card"><h2><a href="dg1001e-sim-time-vs-live-weather.html">DG-1001e: sim clock, real clock and Live weather</a></h2><p>India at sim noon while it was 1 am there in real life: +4 m/s cumulus lift with a preset. Live weather (real night-time atmosphere) gave almost none, even with the sim clock at noon. Applying the preset again brought the lift back within a minute.</p></div>
+</main></body></html>

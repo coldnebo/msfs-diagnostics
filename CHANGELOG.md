@@ -2,6 +2,18 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com); versions follow [semver](https://semver.org).
 
+## [0.5.0] - 2026-10-30
+
+### added
+
+- `examples/`: showcase reports from the first investigation (polars page, four runs), an index, screenshots and a guide to reading them. rebuilt by `scripts/build_examples.py --screenshots`.
+- `AGENTS.md` (with `CLAUDE.md` importing it): commands, rules, live-session workflow and gotchas for AI agents.
+- README rewritten around the technique, findings and how to adapt it to other gliders or sims; polar file format in `data/README.md`.
+
+### changed
+
+- reports embed uPlot's MIT notice.
+
 ## [0.4.0] - 2026-10-30
 
 ### added

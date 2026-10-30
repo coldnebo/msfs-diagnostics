@@ -39,3 +39,25 @@ the manufacturer polars are graphs, so `polars/*.json` will be digitized from th
 ## baselines
 
 a baseline is a measured result for one aircraft on one sim build: e.g. the still-air polar, or ridge/thermal test results. folders are named by the MSFS 2024 build string as shown in the sim (e.g. `msfs2024-1.x.y.0`), so results from different builds can be compared side by side. each baseline records the aircraft version and test conditions in its metadata.
+
+## polars
+
+One JSON file per aircraft in `polars/`. The analysis picks the file whose `match_titles` entry appears in the sim's aircraft `TITLE`.
+
+```json
+{
+  "aircraft": "DG-1000 (20 m)",
+  "match_titles": ["DG-1001", "DG-1000"],
+  "status": "table",                       // table | provisional | ... (shown on reports)
+  "source": { "id": "<sources.json id>", "page": "where the numbers came from", "read_on": "YYYY-MM-DD" },
+  "valid_ias_kmh": [70, 130],              // predictions outside this range are left blank
+  "flaps": false,                          // or "flap_index_names": {"4": "N"} for FLAPS HANDLE INDEX labels
+  "sets": [                                // one per reference mass
+    { "mass_kg": 736,
+      "min_sink": { "ias_kmh": 98, "sink_ms": 0.62 },               // optional: becomes the curve's lowest point
+      "points": [ { "ias_kmh": 120, "sink_ms": 0.715 } ] }           // IAS km/h, sink m/s, straight flight, sea level
+  ]
+}
+```
+
+Each set is fitted with a parabola (least squares through the points; with `min_sink`, the points are mirrored across it so the minimum sits there). Predictions use the set nearest the actual mass, scaled by √(m/m_ref), then corrected for bank (÷cos^1.5) and altitude (×TAS/IAS). Points read off a chart are recorded once and reused; changing them is a deliberate edit, logged in `design/WORKLOG.md`.

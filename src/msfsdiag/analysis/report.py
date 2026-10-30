@@ -103,7 +103,9 @@ def payload(run, legs):
 
 def render(data) -> str:
     css = (VENDOR / "uPlot.min.css").read_text(encoding="utf-8")
-    js = (VENDOR / "uPlot.iife.min.js").read_text(encoding="utf-8")
+    # uPlot is MIT: its notice travels with the copy embedded in every page
+    lic = (VENDOR / "uPlot.LICENSE").read_text(encoding="utf-8").replace("*/", "* /")
+    js = "/*\n" + lic + "*/\n" + (VENDOR / "uPlot.iife.min.js").read_text(encoding="utf-8")
     blob = json.dumps(data, separators=(",", ":")).replace("</", "<\\/")
     return (TEMPLATE
             .replace("%%TITLE%%", html.escape(data["name"]))
