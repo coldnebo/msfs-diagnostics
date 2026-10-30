@@ -15,8 +15,31 @@ import math
 import sys
 import time
 
+from ctypes import POINTER, cast
+
 from SimConnect import SimConnect
+from SimConnect.Enum import SIMCONNECT_RECV_ID, SIMCONNECT_RECV_OPEN
 from SimConnect.RequestList import Request
+
+import msfsdiag
+
+
+class VersionedSimConnect(SimConnect):
+    """SimConnect that keeps the sim's version from the connection message."""
+
+    sim_info = None
+
+    def my_dispatch_proc(self, pData, cbData, pContext):
+        if pData.contents.dwID == SIMCONNECT_RECV_ID.SIMCONNECT_RECV_ID_OPEN:
+            o = cast(pData, POINTER(SIMCONNECT_RECV_OPEN)).contents
+            self.sim_info = {
+                "app": o.szApplicationName.decode(errors="replace"),
+                "version": f"{o.dwApplicationVersionMajor}.{o.dwApplicationVersionMinor}"
+                           f".{o.dwApplicationBuildMajor}.{o.dwApplicationBuildMinor}",
+                "simconnect": f"{o.dwSimConnectVersionMajor}.{o.dwSimConnectVersionMinor}"
+                              f".{o.dwSimConnectBuildMajor}.{o.dwSimConnectBuildMinor}",
+            }
+        return super().my_dispatch_proc(pData, cbData, pContext)
 
 # (key, simvar, unit). units chosen so the analysis is SI where it matters.
 VARS = [
@@ -53,8 +76,8 @@ def make_requests(sm):
     return reqs
 
 
-def sample(reqs):
-    out = {"t": time.time()}
+def sample(reqs, sm):
+    out = {"t": time.time(), "paused": bool(sm.paused)}
     for k, r in reqs.items():
         v = r.value
         if isinstance(v, bytes):
@@ -79,23 +102,36 @@ def main():
     ap.add_argument("--out", help="write every sample as JSON Lines")
     ap.add_argument("--once", action="store_true")
     ap.add_argument("--print-every", type=float, default=0.5, help="seconds between printed lines")
+    ap.add_argument("--note", default="", help="test conditions, saved in the .meta.json sidecar")
     args = ap.parse_args()
 
-    sm = SimConnect()
+    sm = VersionedSimConnect()
     reqs = make_requests(sm)
-    first = sample(reqs)
+    first = sample(reqs, sm)
     if args.once:
-        print(json.dumps(first, indent=2))
+        print(json.dumps({"sim": sm.sim_info, **first}, indent=2))
         sm.exit()
         return
-    print(f"connected: {first.get('title')}")
+    print(f"connected: {sm.sim_info} {first.get('title')}")
+    if args.out:
+        meta = {
+            "tool": "simconnect_probe",
+            "tool_version": msfsdiag.__version__,
+            "started": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+            "sim": sm.sim_info,
+            "aircraft_title": first.get("title"),
+            "note": args.note,
+            "vars": {k: [n.decode(), u.decode()] for k, n, u in VARS},
+        }
+        with open(args.out.removesuffix(".jsonl") + ".meta.json", "w", encoding="utf-8") as f:
+            json.dump(meta, f, indent=2)
 
     # line-buffered, so a killed process still leaves every sample on disk
     out = open(args.out, "a", encoding="utf-8", buffering=1) if args.out else None
     n, t0, last_print = 0, time.time(), time.time()
     try:
         while True:
-            s = sample(reqs)
+            s = sample(reqs, sm)
             n += 1
             if out:
                 out.write(json.dumps(s) + "\n")

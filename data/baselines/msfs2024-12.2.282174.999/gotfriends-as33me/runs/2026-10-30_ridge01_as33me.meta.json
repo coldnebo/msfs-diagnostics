@@ -1,0 +1,16 @@
+{
+  "tool": "simconnect_probe",
+  "tool_version": "0.1.0 (spike, pre-metadata; sidecar written after the fact)",
+  "sim": {
+    "app": "SunRise",
+    "version": "12.2.282174.999",
+    "simconnect": "12.2.0.0",
+    "note": "version read over SimConnect at 2026-10-30 14:43 local, same session"
+  },
+  "aircraft_title": "AS 33 Me (18m)",
+  "mass_kg": 599,
+  "site": "Bald Eagle Mountain, PA, from Ridge Soaring Gliderport (79N)",
+  "weather": "SSC 368 Overcast T0 NW15 (Soaring Weather v5.0.2)",
+  "rate_hz": 3,
+  "note": "starts before SSC 368 took effect (calm, wind ~6 kt N); slew/reposition at ~0.8 min (IAS 0, alt +245 m); no flap/pause fields. flaps were at index 6 (25 deg) throughout per pilot. ridge legs at 150-180 km/h."
+}
