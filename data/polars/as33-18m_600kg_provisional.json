@@ -1,0 +1,20 @@
+{
+  "aircraft": "AS 33 (18 m)",
+  "applies_to_sim": ["GotFriends AS 33 Me"],
+  "status": "provisional",
+  "status_note": "3 points read by eye during the first ridge test, to check results quickly. replace with a proper digitization in phase 5; until then these are the points to use.",
+  "source": {
+    "id": "gotfriends-as33me-sim",
+    "page": "PDF p.7 (manual p.6), 'Straight Flight Polar AS 33 Es 18m', 600 kg / 60 kg/m² curve",
+    "same_chart_as": "as33es-fm-en PDF p.99 (Schleicher, 'Data basis: Preliminary estimate')",
+    "read_on": "2026-10-30"
+  },
+  "mass_kg": 600,
+  "flap": "per flap range chart (same page): N at ~100-118 km/h, 2 at ~165-192 km/h, 1 above",
+  "conditions": "straight flight, MSL ISA, IAS",
+  "points": [
+    { "ias_kmh": 110, "sink_ms": 0.6 },
+    { "ias_kmh": 173, "sink_ms": 1.0 },
+    { "ias_kmh": 210, "sink_ms": 1.5 }
+  ]
+}
