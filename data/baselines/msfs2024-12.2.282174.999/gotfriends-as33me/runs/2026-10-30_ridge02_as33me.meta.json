@@ -5,7 +5,8 @@
     "app": "SunRise",
     "version": "12.2.282174.999",
     "simconnect": "12.2.0.0",
-    "note": "version read over SimConnect at 2026-10-30 14:43 local, same session"
+    "note": "version read over SimConnect at 2026-10-30 14:43 local, same session",
+    "store_version": "1.9.21.0"
   },
   "aircraft_title": "AS 33 Me (18m)",
   "mass_kg": 599,

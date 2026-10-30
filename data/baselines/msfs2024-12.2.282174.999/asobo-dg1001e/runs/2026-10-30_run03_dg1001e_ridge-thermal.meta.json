@@ -1,0 +1,53 @@
+{
+  "tool": "simconnect_probe",
+  "tool_version": "0.1.0",
+  "sim": {
+    "app": "SunRise",
+    "version": "12.2.282174.999",
+    "simconnect": "12.2.0.0",
+    "store_version": "1.9.21.0"
+  },
+  "aircraft_title": "DG-1001-E Neo (first ~6 min: AS 33 Me (18m), then aircraft switch while paused)",
+  "mass_kg": 748,
+  "rate_hz": 3,
+  "site": "ridge and valley ~125 km east of 79N, around 40.82-40.87 N, 76.47-76.55 W",
+  "segments": [
+    {
+      "from": "14:49:41",
+      "to": "14:54:59",
+      "weather": "SSC 368 Overcast T0 NW15",
+      "what": "ridge legs ~100 km/h"
+    },
+    {
+      "from": "14:55:02",
+      "to": "15:01:07",
+      "weather": "SSC 093 Low Cu T4-8 NW5",
+      "what": "thermal pass 1, straight, 300-430 m AGL; pause markers 14:59:14 (vis vanished) and 14:59:53 (judged centre)"
+    },
+    {
+      "from": "15:01:07",
+      "to": "15:04:50",
+      "weather": "SSC 093",
+      "what": "slews up, pass 2 at ~900 m AGL, circling"
+    },
+    {
+      "from": "15:04:50",
+      "to": "15:10:05",
+      "weather": "SSC 093",
+      "what": "slew down to ~250 m AGL, pass 3 climb to ~900 m AGL (lift by height); pause 15:05:39"
+    },
+    {
+      "from": "15:14:43",
+      "to": "15:16:00",
+      "weather": "MSFS default Clear, Oct 30 noon",
+      "what": "weak thermal pass"
+    },
+    {
+      "from": "15:17:03",
+      "to": "15:19:00",
+      "weather": "MSFS default Clear, June 21 noon",
+      "what": "88 s circling climb, 15:17:24-15:18:52"
+    }
+  ],
+  "note": "times are local (UTC-4). paused samples read AMBIENT WIND Y ~0; exclude them."
+}
