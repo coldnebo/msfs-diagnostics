@@ -65,6 +65,11 @@ VARS = [
     ("flap_l_deg", b"TRAILING EDGE FLAPS LEFT ANGLE", b"Degrees"),
     ("spoilers", b"SPOILERS HANDLE POSITION", b"Percent"),
     ("sim_rate", b"SIMULATION RATE", b"Number"),
+    # sim clock, to tell sim time from real-world time
+    ("sim_local_s", b"LOCAL TIME", b"Seconds"),
+    ("sim_zulu_s", b"ZULU TIME", b"Seconds"),
+    ("sim_day_of_year", b"LOCAL DAY OF YEAR", b"Number"),
+    ("sim_time_of_day", b"TIME OF DAY", b"Enum"),  # 0 dawn, 1 day, 2 dusk, 3 night
     ("on_ground", b"SIM ON GROUND", b"Bool"),
 ]
 STRING_VARS = [("title", b"TITLE", b"String")]
