@@ -2,6 +2,14 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com); versions follow [semver](https://semver.org).
 
+## [0.7.0] - 2026-10-31
+
+### added
+
+- stall/spin analysis (`msfsdiag.analysis.stallspin`): per test point, event detection (warning, full aft, peak AoA, departure, pro-spin rudder, yoke forward, opposite rudder, stop, level) and measurements (stall: warning, peak AoA, pitch break, wing drop; spin: direction, turns before/after recovery inputs, what stopped it, per-turn time and height, developed-spin rate, AoA, IAS trend, mode flat/spiral-like/steep).
+- `python -m msfsdiag.analysis.stallspin_report`: committed `results/*.points.json`, per-aircraft pages (charts with event markers, thinned to 20 Hz), and `reports/stall-spin.html` comparing the aircraft.
+- results for the 2026-10-31 session (C172, C152, Comanche).
+
 ## [0.6.0] - 2026-10-31
 
 ### added

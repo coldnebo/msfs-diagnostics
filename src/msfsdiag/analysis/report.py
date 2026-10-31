@@ -177,6 +177,7 @@ body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif;max
 a{color:var(--link)}span{color:var(--mute);margin-left:8px}li{margin:6px 0}</style></head>
 <body><h1>Run reports</h1>
 <p><a href="polars.html">Polars vs measured</a> <span>every steady leg against the manual polars</span></p>
+<p><a href="stall-spin.html">Stalls and spins compared</a> <span>C172, C152 and Comanche on the same test card (python -m msfsdiag.analysis.stallspin_report)</span></p>
 <ul>%%ITEMS%%</ul></body></html>"""
 
 

@@ -24,6 +24,7 @@ python -m msfsdiag.telemetry.recorder --out data/raw/<date>_<name>.jsonl --note 
 python scripts/simconnect_probe.py --once             # older ~3 Hz probe (glider runs were recorded with it)
 python -m msfsdiag.analysis.report --all              # reports/ (gitignored): one page per baseline run + polars.html + index.html
 python scripts/steady_segments.py <run.jsonl>         # steady legs as text
+python -m msfsdiag.analysis.stallspin_report          # stall/spin: results/*.points.json (committed) + reports/stall-spin.html
 python scripts/build_examples.py --screenshots        # examples/ (committed); screenshots need Microsoft Edge
 python scripts/fetch_sources.py                       # download reference manuals (PDFs are gitignored)
 ```
@@ -36,6 +37,8 @@ python scripts/fetch_sources.py                       # download reference manua
   - `legs.py`: steady legs
   - `report.py`: per-run HTML
   - `polar_report.py`: polars page
+  - `stallspin.py`: stall/spin event detection and measurements per test point (meta `segments` with a `point`)
+  - `stallspin_report.py`: per-aircraft stall/spin pages and the comparison page
   - `vendor/`: uPlot, MIT
 - `scripts/`: recorder (`simconnect_probe.py`), text view, example builder, manual fetcher
 - `data/polars/*.json`: one polar per aircraft, matched to the sim's `TITLE` by `match_titles`

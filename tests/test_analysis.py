@@ -138,3 +138,53 @@ def test_report_html_is_self_contained(tmp_path):
     assert "uPlot" in html and '"name":"run"' in html
     assert "<script src=" not in html and "<link" not in html  # nothing loaded from outside
     assert len(lg) == 1
+
+
+def spin_rows(turn_dps=120.0, spin_s=6.0, rec_s=1.0, hz=60):
+    """Synthetic right spin: wings level, nose level (so rotation = yaw rate), then recovery."""
+    rows, t = [], T0
+    for i in range(int(hz * 2)):                          # 2 s of stalled entry, warning on
+        rows.append(dict(t=t, ias_kt=45.0, aoa_deg=12 + i / hz * 4, pitch_deg=0.0, bank_deg=0.0, p_dps=0.0, q_dps=0.0,
+                         r_dps=0.0, alt_ft=5000 - i * 0.5, vs_fpm=-500.0, g=1.0, yoke_y=0.8, pedals=0.0,
+                         stall_warn=1, stall_aoa_deg=14.0, lat=40 + i * 1e-6, lon=-77.0, paused=False, on_ground=0))
+        t += 1 / hz
+    for i in range(int(hz * spin_s)):                     # spin: full right rudder, full aft
+        rows.append(dict(rows[-1], t=t, aoa_deg=30.0, r_dps=turn_dps, yoke_y=1.0, pedals=1.0,
+                         alt_ft=rows[-1]["alt_ft"] - 1.5, lat=rows[-1]["lat"] + 1e-6, vs_fpm=-5000.0))
+        t += 1 / hz
+    for i in range(int(hz * rec_s)):                      # recovery: opposite rudder + yoke forward, decay
+        f = 1 - i / (hz * rec_s)
+        rows.append(dict(rows[-1], t=t, aoa_deg=8.0, r_dps=turn_dps * f, yoke_y=0.1, pedals=-1.0,
+                         alt_ft=rows[-1]["alt_ft"] - 1.5, lat=rows[-1]["lat"] + 1e-6))
+        t += 1 / hz
+    for i in range(int(hz * 3)):                          # level off
+        rows.append(dict(rows[-1], t=t, aoa_deg=3.0, r_dps=0.0, yoke_y=0.0, pedals=0.0, ias_kt=80.0, vs_fpm=0.0,
+                         stall_warn=0, lat=rows[-1]["lat"] + 1e-6))
+        t += 1 / hz
+    return rows
+
+
+def test_stallspin_detects_spin_turns_and_recovery(tmp_path):
+    from datetime import datetime
+    from msfsdiag.analysis import stallspin as ss
+    rows = spin_rows()
+    run = tmp_path / "x_stall-spin.jsonl"
+    run.write_text("\n".join(json.dumps(r, separators=(",", ":")) for r in rows))
+    t0 = datetime.fromtimestamp(T0).strftime("%H:%M:%S")
+    t1 = datetime.fromtimestamp(rows[-1]["t"]).strftime("%H:%M:%S")
+    (tmp_path / "x_stall-spin.meta.json").write_text(json.dumps({"segments": [{"from": t0, "to": t1, "point": "E"}]}))
+    meta, (p,) = ss.analyze(run)
+    m = p.m
+    assert m["kind"] == "spin" and m["direction"] == "right"
+    assert m["turns_before_first_input"] == pytest.approx(2.0, abs=0.05)   # 120 deg/s for 6 s
+    assert m["turns_after_first_input"] == pytest.approx(1 / 6, abs=0.05)  # linear decay over 1 s
+    assert m["stopped_by"] == "yoke forward + opposite rudder"
+    assert m["per_turn"][0]["s"] == pytest.approx(3.0, abs=0.05)
+
+
+def test_stallspin_sign_normalisation():
+    from msfsdiag.analysis import stallspin as ss
+    raw = dict(t=T0, ias_kt=50, aoa_deg=10, pitch_deg=-5.0, bank_deg=-20.0, p_dps=-10.0, q_dps=0.0, r_dps=3.0,
+               alt_ft=5000)
+    s = ss.norm(raw)
+    assert s["pitch"] == 5.0 and s["bank"] == 20.0 and s["roll"] == 10.0 and s["yaw"] == 3.0

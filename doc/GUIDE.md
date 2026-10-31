@@ -60,6 +60,21 @@ Same table as text: `python scripts/steady_segments.py <run.jsonl>`.
 - **All aircraft**: predicted vs measured sink. On the dashed line the glider does exactly what its polar says; the strip is ±0.15 m/s.
 - **Per aircraft**: the polar curve with each leg scaled to the polar's reference mass, straight flight and sea level, plus the gap per leg. Dots are coloured by flap setting. The stats give the median gap and its spread: a steady offset with small spread means the polar is a little off for this airframe, while scatter, or dots far above the curve, means something in the flight (flaps, technique) or the sim differs.
 
+## stalls and spins
+
+Fly the points on [TESTCARD-stall-spin.md](TESTCARD-stall-spin.md) with the high-rate recorder (`--out ....jsonl.gz`). Afterwards, list each point in the run's `.meta.json` `segments` with a `point` (A, B, C, E, F, G; `-` to skip) and a `what`, then:
+
+```
+python -m msfsdiag.analysis.stallspin_report
+```
+
+For each stall-spin run this writes `results/<run>.points.json` next to `runs/` (small, committed) and a page per aircraft, plus `reports/stall-spin.html` comparing them. Per point it detects the stall warning, yoke full aft, peak AoA, departure, pro-spin rudder, yoke forward, opposite rudder, rotation stop and level-off, and measures:
+
+- **stall**: warning IAS and AoA, peak AoA, pitch break, wing drop, height lost
+- **spin**: direction, turns (total, before the first recovery input, after it, after opposite rudder), what stopped it, per-turn seconds and feet, and the developed spin (after turn 1): s/turn, ft/turn, AoA, pitch, IAS trend, sideslip. Mode: **flat** (mean AoA ≥ 35°), **spiral-like** (IAS climbing > 0.8 kt/s with AoA < 22°) or **steep**.
+
+Turns are counted about the vertical axis from the body rates, so they stay right when the nose is near vertical. Inside a flat spin the indicated airspeed is meaningless.
+
 ## polars
 
 `data/polars/*.json`, one per aircraft, matched to the sim's aircraft title by `match_titles`. See [data/README.md](../data/README.md) and the module docstring in `src/msfsdiag/analysis/polar.py` for the format and corrections (mass, bank, altitude). Points read from a chart are recorded once and reused; changing them is a deliberate, logged edit.

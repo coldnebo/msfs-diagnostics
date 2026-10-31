@@ -1,0 +1,415 @@
+{
+ "run": "2026-10-31_stall-spin_a2a-pa24-250",
+ "aircraft_title": "A2A Piper PA-24-250 Comanche",
+ "sim": {
+  "app": "SunRise",
+  "version": "12.2.282174.999",
+  "simconnect": "12.2.0.0",
+  "store_version": "1.9.21.0 (assumed unchanged from 2026-10-30)"
+ },
+ "points": [
+  {
+   "label": "16:58:28 A",
+   "point": "A",
+   "what": "power-off stall, clean, yoke 0.8: pitch break at AoA 12.9, 9 deg right",
+   "warn_ias_kt": 47.4,
+   "warn_aoa_deg": 10.0,
+   "flaps_deg": 0.0,
+   "gear_pct": null,
+   "throttle_pct": 13.0,
+   "weight_lb": 2080.0,
+   "entry_alt_ft": 7858,
+   "stall_aoa_sim_deg": 14.32,
+   "peak_aoa_deg": 12.9,
+   "min_ias_kt": 45.2,
+   "yoke_at_peak": 0.78,
+   "pitch_break_deg": 22.8,
+   "wing_drop_deg": 8.8,
+   "max_roll_rate_dps": 10.0,
+   "kind": "stall",
+   "height_lost_ft": 256,
+   "max_g": 1.47,
+   "max_ias_kt": 78,
+   "times": {
+    "warning": "16:58:29.88",
+    "peak_aoa": "16:58:32.00",
+    "level": "16:58:41.97"
+   }
+  },
+  {
+   "label": "17:00:40 E",
+   "point": "E",
+   "what": "spin left, power off, clean: snap entry, 2 turns, then 4.7 flat turns with rudder held (yoke eased); opposite rudder stopped it",
+   "direction": "left",
+   "warn_ias_kt": 48.9,
+   "warn_aoa_deg": 10.1,
+   "flaps_deg": 0.0,
+   "gear_pct": null,
+   "throttle_pct": 14.0,
+   "weight_lb": 2078.0,
+   "entry_alt_ft": 7982,
+   "stall_aoa_sim_deg": 14.32,
+   "peak_aoa_deg": 13.0,
+   "min_ias_kt": 45.0,
+   "yoke_at_peak": 0.76,
+   "pitch_break_deg": 29.4,
+   "wing_drop_deg": 85.6,
+   "max_roll_rate_dps": 60.0,
+   "departure_s_after_warning": 3.9,
+   "pro_rudder_before_departure": true,
+   "turns_total": 6.67,
+   "turns_before_first_input": 1.98,
+   "per_turn": [
+    {
+     "s": 3.7,
+     "ft": 332
+    },
+    {
+     "s": 1.7,
+     "ft": 212
+    },
+    {
+     "s": 1.9,
+     "ft": 213
+    },
+    {
+     "s": 2.0,
+     "ft": 208
+    },
+    {
+     "s": 2.0,
+     "ft": 204
+    },
+    {
+     "s": 2.0,
+     "ft": 202
+    }
+   ],
+   "turns_after_first_input": 4.69,
+   "turns_after_opp_rudder": 0.22,
+   "s_after_opp_rudder": 1.4,
+   "stopped_by": "opposite rudder",
+   "developed": {
+    "s_per_turn": 1.92,
+    "ft_per_turn": 208,
+    "rot_dps": 181,
+    "aoa_deg": [
+     25.1,
+     43.7,
+     57.2
+    ],
+    "pitch_deg": [
+     -87,
+     -26
+    ],
+    "ias_kt": [
+     58,
+     37
+    ],
+    "ias_slope_kt_s": -1.9,
+    "g_slope_per_s": -0.053,
+    "sideslip_deg": 19.5
+   },
+   "mode": "flat",
+   "kind": "spin",
+   "height_lost_ft": 2182,
+   "max_g": 2.96,
+   "max_ias_kt": 101,
+   "times": {
+    "warning": "17:00:42.96",
+    "full_aft": "17:00:48.84",
+    "peak_aoa": "17:00:44.83",
+    "departure": "17:00:46.90",
+    "pro_rudder": "17:00:45.59",
+    "yoke_fwd": "17:00:52.26",
+    "opp_rudder": "17:01:01.43",
+    "stop": "17:01:02.78",
+    "level": "17:01:09.74"
+   }
+  },
+  {
+   "label": "17:04:20 C",
+   "point": "C",
+   "what": "partial-power stall, rudder neutral: snapped left to 92 deg bank, no spin",
+   "direction": "left",
+   "warn_ias_kt": 44.4,
+   "warn_aoa_deg": 10.0,
+   "flaps_deg": 0.0,
+   "gear_pct": null,
+   "throttle_pct": 23.0,
+   "weight_lb": 2073.0,
+   "entry_alt_ft": 6836,
+   "stall_aoa_sim_deg": 14.32,
+   "peak_aoa_deg": 22.8,
+   "min_ias_kt": 42.3,
+   "yoke_at_peak": 0.52,
+   "pitch_break_deg": 61.3,
+   "wing_drop_deg": 92.6,
+   "max_roll_rate_dps": 49.0,
+   "departure_s_after_warning": 10.4,
+   "pro_rudder_before_departure": false,
+   "turns_total": 0.06,
+   "turns_before_first_input": 0.02,
+   "per_turn": [],
+   "turns_after_first_input": 0.04,
+   "stopped_by": "yoke forward",
+   "kind": "departure",
+   "height_lost_ft": 536,
+   "max_g": 2.47,
+   "max_ias_kt": 97,
+   "times": {
+    "warning": "17:04:21.33",
+    "full_aft": "17:04:31.35",
+    "peak_aoa": "17:04:27.17",
+    "departure": "17:04:31.75",
+    "yoke_fwd": "17:04:31.97",
+    "stop": "17:04:32.33",
+    "level": "17:04:37.60"
+   }
+  },
+  {
+   "label": "17:05:12 E",
+   "point": "E",
+   "what": "power-on spin left: ~5 flat turns with rudder held; opposite rudder stopped it",
+   "direction": "left",
+   "warn_ias_kt": 43.7,
+   "warn_aoa_deg": 10.1,
+   "flaps_deg": 0.0,
+   "gear_pct": null,
+   "throttle_pct": 31.0,
+   "weight_lb": 2072.0,
+   "entry_alt_ft": 6587,
+   "stall_aoa_sim_deg": 14.32,
+   "peak_aoa_deg": 19.5,
+   "min_ias_kt": 39.5,
+   "yoke_at_peak": 0.48,
+   "pitch_break_deg": 8.5,
+   "wing_drop_deg": 98.2,
+   "max_roll_rate_dps": 115.0,
+   "departure_s_after_warning": 15.4,
+   "pro_rudder_before_departure": true,
+   "turns_total": 5.2,
+   "turns_before_first_input": 0.69,
+   "per_turn": [
+    {
+     "s": 3.2,
+     "ft": 191
+    },
+    {
+     "s": 2.0,
+     "ft": 183
+    },
+    {
+     "s": 1.8,
+     "ft": 172
+    },
+    {
+     "s": 1.7,
+     "ft": 161
+    }
+   ],
+   "turns_after_first_input": 4.51,
+   "turns_after_opp_rudder": 0.35,
+   "s_after_opp_rudder": 3.2,
+   "stopped_by": "opposite rudder",
+   "developed": {
+    "s_per_turn": 1.83,
+    "ft_per_turn": 172,
+    "rot_dps": 191,
+    "aoa_deg": [
+     25.6,
+     53.0,
+     77.7
+    ],
+    "pitch_deg": [
+     -67,
+     2
+    ],
+    "ias_kt": [
+     5,
+     26
+    ],
+    "ias_slope_kt_s": 0.18,
+    "g_slope_per_s": -0.016,
+    "sideslip_deg": 32.8
+   },
+   "mode": "flat",
+   "kind": "spin",
+   "height_lost_ft": 1453,
+   "max_g": 2.52,
+   "max_ias_kt": 106,
+   "times": {
+    "warning": "17:05:15.53",
+    "full_aft": "17:05:43.54",
+    "peak_aoa": "17:05:30.76",
+    "departure": "17:05:30.93",
+    "pro_rudder": "17:05:30.00",
+    "yoke_fwd": "17:05:33.35",
+    "opp_rudder": "17:05:41.34",
+    "stop": "17:05:44.56",
+    "level": "17:05:50.71"
+   }
+  },
+  {
+   "label": "17:09:15 A+E",
+   "point": "A+E",
+   "what": "stall with rudder neutral (right wing drop to 56 deg), then spin right 5.4 turns; opposite rudder stopped it",
+   "direction": "right",
+   "warn_ias_kt": 46.3,
+   "warn_aoa_deg": 10.0,
+   "flaps_deg": 0.0,
+   "gear_pct": null,
+   "throttle_pct": 13.0,
+   "weight_lb": 2067.0,
+   "entry_alt_ft": 6169,
+   "stall_aoa_sim_deg": 14.32,
+   "peak_aoa_deg": 12.4,
+   "min_ias_kt": 44.4,
+   "yoke_at_peak": 0.96,
+   "pitch_break_deg": 0.0,
+   "wing_drop_deg": 63.3,
+   "max_roll_rate_dps": 30.0,
+   "departure_s_after_warning": 8.0,
+   "pro_rudder_before_departure": false,
+   "turns_total": 5.27,
+   "turns_before_first_input": 1.82,
+   "per_turn": [
+    {
+     "s": 3.5,
+     "ft": 304
+    },
+    {
+     "s": 1.7,
+     "ft": 195
+    },
+    {
+     "s": 1.9,
+     "ft": 194
+    },
+    {
+     "s": 2.0,
+     "ft": 194
+    },
+    {
+     "s": 2.2,
+     "ft": 215
+    }
+   ],
+   "turns_after_first_input": 3.45,
+   "turns_after_opp_rudder": 0.26,
+   "s_after_opp_rudder": 3.0,
+   "stopped_by": "opposite rudder",
+   "developed": {
+    "s_per_turn": 1.95,
+    "ft_per_turn": 200,
+    "rot_dps": 183,
+    "aoa_deg": [
+     25.6,
+     47.2,
+     62.8
+    ],
+    "pitch_deg": [
+     -86,
+     -20
+    ],
+    "ias_kt": [
+     57,
+     32
+    ],
+    "ias_slope_kt_s": -3.19,
+    "g_slope_per_s": -0.086,
+    "sideslip_deg": 23.0
+   },
+   "mode": "flat",
+   "kind": "spin",
+   "height_lost_ft": 1994,
+   "max_g": 3.34,
+   "max_ias_kt": 110,
+   "times": {
+    "warning": "17:09:17.27",
+    "full_aft": "17:09:25.17",
+    "peak_aoa": "17:09:25.25",
+    "departure": "17:09:25.25",
+    "pro_rudder": "17:09:25.40",
+    "yoke_fwd": "17:09:30.18",
+    "opp_rudder": "17:09:36.67",
+    "stop": "17:09:39.68",
+    "level": "17:09:45.13"
+   }
+  },
+  {
+   "label": "17:12:28 B",
+   "point": "B",
+   "what": "gear down (pilot), flaps 38 deg: spin right ~2.5 turns, steep (AoA 19-27, IAS ~55-60)",
+   "direction": "right",
+   "warn_ias_kt": 42.1,
+   "warn_aoa_deg": 10.0,
+   "flaps_deg": 38.0,
+   "gear_pct": null,
+   "throttle_pct": 12.0,
+   "weight_lb": 2063.0,
+   "entry_alt_ft": 4920,
+   "stall_aoa_sim_deg": 14.32,
+   "peak_aoa_deg": 13.1,
+   "min_ias_kt": 41.3,
+   "yoke_at_peak": 0.79,
+   "pitch_break_deg": 0.0,
+   "wing_drop_deg": 52.3,
+   "max_roll_rate_dps": 36.0,
+   "departure_s_after_warning": 4.2,
+   "pro_rudder_before_departure": false,
+   "turns_total": 3.09,
+   "turns_before_first_input": 2.71,
+   "per_turn": [
+    {
+     "s": 4.1,
+     "ft": 347
+    },
+    {
+     "s": 2.0,
+     "ft": 252
+    }
+   ],
+   "turns_after_first_input": 0.38,
+   "turns_after_opp_rudder": 0.38,
+   "s_after_opp_rudder": 2.8,
+   "stopped_by": "yoke forward + opposite rudder",
+   "developed": {
+    "s_per_turn": 2.0,
+    "ft_per_turn": 252,
+    "rot_dps": 186,
+    "aoa_deg": [
+     21.5,
+     24.6,
+     27.7
+    ],
+    "pitch_deg": [
+     -85,
+     -52
+    ],
+    "ias_kt": [
+     60,
+     60
+    ],
+    "ias_slope_kt_s": -0.47,
+    "g_slope_per_s": 0.058,
+    "sideslip_deg": 5.6
+   },
+   "mode": "steep",
+   "kind": "spin",
+   "height_lost_ft": 1686,
+   "max_g": 3.08,
+   "max_ias_kt": 117,
+   "times": {
+    "warning": "17:12:30.96",
+    "full_aft": "17:12:36.84",
+    "peak_aoa": "17:12:35.14",
+    "departure": "17:12:35.14",
+    "yoke_fwd": "17:12:42.51",
+    "opp_rudder": "17:12:42.51",
+    "stop": "17:12:45.29",
+    "level": "17:12:50.29"
+   }
+  }
+ ]
+}
