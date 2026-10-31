@@ -188,3 +188,17 @@ def test_stallspin_sign_normalisation():
                alt_ft=5000)
     s = ss.norm(raw)
     assert s["pitch"] == 5.0 and s["bank"] == 20.0 and s["roll"] == 10.0 and s["yaw"] == 3.0
+
+
+def test_3d_payload_positions_and_page(tmp_path):
+    from msfsdiag.analysis import stallspin as ss, stallspin_3d
+    s0 = dict(t=T0, lat=40.0, lon=-77.0, alt=5000.0, hdg=90.0, pitch=0.0, bank=0.0, aoa=5.0, rot=0.0, ias=60.0,
+              vs=0.0, g=1.0, yoke=0.0, ped=0.0, ail=0.0)
+    s1 = dict(s0, t=T0 + 1, lat=40.001, lon=-76.999, alt=5000.0 + 1 / 0.3048)
+    pt = ss.Point("E", "12:00:00 E", "test", [s0, s1], T0)
+    d = stallspin_3d.point_payload(pt)["data"]
+    assert d["e"][1] == pytest.approx(111320 * 0.001 * math.cos(math.radians(40)), rel=1e-3)   # east, m
+    assert d["n"][1] == pytest.approx(110.54, rel=1e-3)                                         # north, m
+    assert d["u"][1] == pytest.approx(1.0, abs=0.01)                                            # up, m
+    page = stallspin_3d.render(stallspin_3d.payload({"aircraft_title": "X"}, [pt]), back_href="x.html")
+    assert "THREE.OrbitControls" in page and "<script src=" not in page

@@ -75,6 +75,8 @@ For each stall-spin run this writes `results/<run>.points.json` next to `runs/` 
 
 Turns are counted about the vertical axis from the body rates, so they stay right when the nose is near vertical. Inside a flat spin the indicated airspeed is meaningless.
 
+Each aircraft page links a **3D view** (`<run>-3d.html`): the recorded path at true scale (east/north/up metres from the point's start) with an aircraft flown along it at the recorded pitch, bank and heading. Pick a test point, play, change speed, scrub, orbit and zoom; "follow" keeps the camera on the aircraft; the readout shows AoA, rotation, attitude, IAS, altitude, g and control inputs. The URL keeps the point and time (`#p=1&t=16`), so a moment can be shared. It uses three.js r147 (MIT), vendored so the page works offline (~1.1 MB).
+
 ## polars
 
 `data/polars/*.json`, one per aircraft, matched to the sim's aircraft title by `match_titles`. See [data/README.md](../data/README.md) and the module docstring in `src/msfsdiag/analysis/polar.py` for the format and corrections (mass, bank, altitude). Points read from a chart are recorded once and reused; changing them is a deliberate, logged edit.

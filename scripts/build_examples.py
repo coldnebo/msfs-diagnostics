@@ -18,6 +18,7 @@ from msfsdiag import __version__
 from msfsdiag.analysis import polar, polar_report, report
 from msfsdiag.analysis import stallspin as ss
 from msfsdiag.analysis import stallspin_report as ssr
+from msfsdiag.analysis import stallspin_3d
 from msfsdiag.config import load as load_config
 
 BUILD = "msfs2024-12.2.282174.999"
@@ -125,7 +126,7 @@ single self-contained file (data and charts inside) that also works offline.</p>
 
 
 def thumb_name(page):
-    return "img/thumb/" + page.removesuffix(".html") + ".png"
+    return "img/thumb/" + page.split("#")[0].removesuffix(".html") + ".png"
 
 
 def write_index(out_dir, cards):
@@ -180,21 +181,30 @@ def build_stallspin(cfg, out_dir):
     runs = ssr.ordered_runs(cfg.data_dir / "baselines")
     if not runs:
         print("no stall-spin recordings found locally; keeping existing stall/spin examples")
-        found = {f.name for f in out_dir.glob("stall-spin*.html")}
-        return [(n, *STALLSPIN_CARDS[n]) for n in STALLSPIN_CARDS if n in found]
+        found = {f.name for f in out_dir.glob("stall-spin*.html")}  # includes the 3D pages
+        return [(n + (THREED_MOMENT if n.endswith("-3d.html") else ""), *STALLSPIN_CARDS[n])
+                for n in STALLSPIN_CARDS if n in found]
     built = []
     for run in runs:
         meta, points = ss.analyze(run)
         name = "stall-spin-" + run.parent.parent.name + ".html"
         pl = ssr.run_payload(run, meta, points)
-        (out_dir / name).write_text(ssr.render_run(pl, back_href="stall-spin.html"), encoding="utf-8")
+        name3d = name.removesuffix(".html") + "-3d.html"
+        (out_dir / name3d).write_text(stallspin_3d.render(stallspin_3d.payload(meta, points), back_href=name),
+                                      encoding="utf-8")
+        (out_dir / name).write_text(ssr.render_run(pl, back_href="stall-spin.html", threed_href=name3d),
+                                    encoding="utf-8")
         built.append((meta.get("aircraft_title"), name, pl))
         print(out_dir / name)
     (out_dir / "stall-spin.html").write_text(ssr.compare_page(built), encoding="utf-8")
     print(out_dir / "stall-spin.html")
     return [("stall-spin.html", *STALLSPIN_CARDS["stall-spin.html"])] + \
-        [(n, *STALLSPIN_CARDS.get(n, (a, ""))) for a, n, _ in built]
+        [(n, *STALLSPIN_CARDS.get(n, (a, ""))) for a, n, _ in built] + \
+        [(n + THREED_MOMENT, *STALLSPIN_CARDS[n]) for n in ("stall-spin-a2a-pa24-250-3d.html",) if (out_dir / n).exists()]
 
+
+# the 3D card opens the Comanche's first spin 16 s in: nose ~48° down, rotating ~186°/s
+THREED_MOMENT = "#p=1&t=16"
 
 STALLSPIN_CARDS = {
     "stall-spin.html": ("Stalls and spins: C172, C152 and Comanche compared",
@@ -208,6 +218,10 @@ STALLSPIN_CARDS = {
         "WBSim C152: stalls and spins",
         "A clean pitch break; clean spins drift into a spiral (AoA ~16°, airspeed and g climbing). One full-flap entry "
         "rolled against the rudder."),
+    "stall-spin-a2a-pa24-250-3d.html": (
+        "Spins in 3D: the Comanche's flat spin",
+        "The recorded path with the aircraft flown along it at true attitude. Play, scrub and orbit. Every aircraft "
+        "page links its own 3D view."),
     "stall-spin-a2a-pa24-250.html": (
         "A2A Comanche 250: stalls and spins",
         "Wing drops of up to 92° at the break; a fast, flat spin (~2 s per turn, AoA 44-53°) that keeps going with the yoke "
@@ -224,13 +238,14 @@ def _edge():
     return edge
 
 
-def _shot(edge, page, png, w, h, scale=1.0):
+def _shot(edge, page, png, w, h, scale=1.0, fragment=""):
     png = Path(png)
     png.unlink(missing_ok=True)
-    subprocess.run([str(edge), "--headless=new", "--disable-gpu", "--hide-scrollbars",
+    subprocess.run([str(edge), "--headless=new", "--use-angle=swiftshader", "--enable-unsafe-swiftshader",
+                    "--hide-scrollbars",
                     "--blink-settings=preferredColorScheme=1", f"--window-size={w},{h}",
                     f"--force-device-scale-factor={scale}", "--virtual-time-budget=3000", f"--screenshot={png}",
-                    page.resolve().as_uri()], check=True, capture_output=True, timeout=120)
+                    page.resolve().as_uri() + fragment], check=True, capture_output=True, timeout=120)
     # msedge.exe can return before its browser process has written the file
     deadline = time.time() + 20
     while not (png.exists() and png.stat().st_size > 0) and time.time() < deadline:
@@ -252,7 +267,9 @@ def screenshots(out_dir: Path, cards):
             _shot(edge, out_dir / page, img / png, w, h)
     # thumbnails for the index: the top of each page, 16:10, rendered at half scale
     for _, href, *_ in cards:
-        _shot(edge, out_dir / href, out_dir / thumb_name(href), 1280, 800, scale=0.5)
+        page, _, frag = href.partition("#")
+        _shot(edge, out_dir / page, out_dir / thumb_name(href), 1280, 800, scale=0.5,
+              fragment=("#" + frag) if frag else "")
 
 
 if __name__ == "__main__":

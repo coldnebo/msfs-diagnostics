@@ -19,6 +19,7 @@ from pathlib import Path
 from .. import __version__
 from ..config import load as load_config
 from . import stallspin as ss
+from . import stallspin_3d
 from .report import VENDOR
 from .run import find_runs, peek_title
 
@@ -63,14 +64,16 @@ def run_payload(run_path, meta, points):
     }
 
 
-def render_run(payload, back_href="../../../stall-spin.html"):
+def render_run(payload, back_href="../../../stall-spin.html", threed_href=None):
     css = (VENDOR / "uPlot.min.css").read_text(encoding="utf-8")
     lic = (VENDOR / "uPlot.LICENSE").read_text(encoding="utf-8").replace("*/", "* /")
     js = "/*\n" + lic + "*/\n" + (VENDOR / "uPlot.iife.min.js").read_text(encoding="utf-8")
     blob = json.dumps(payload, separators=(",", ":")).replace("</", "<\\/")
     return (RUN_PAGE.replace("%%TITLE%%", html.escape(payload["aircraft"] or payload["name"]))
             .replace("%%UPLOT_CSS%%", css).replace("%%UPLOT_JS%%", js).replace("%%DATA%%", blob)
-            .replace("%%BACK%%", html.escape(back_href)))
+            .replace("%%BACK%%", html.escape(back_href))
+            .replace("%%THREED%%", (f'<p class="note"><a href="{html.escape(threed_href)}"><b>Open the 3D view</b></a>: '
+                                    "the recorded path with the aircraft flown along it.</p>") if threed_href else ""))
 
 
 # ---------- comparison page (inline SVG dot plots)
@@ -198,7 +201,9 @@ def main():
         pl = run_payload(run, meta, points)
         out = cfg.reports_dir / run.parent.relative_to(base) / f"{name}.html"
         out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(render_run(pl), encoding="utf-8")
+        out3d = out.with_name(f"{name}-3d.html")
+        out3d.write_text(stallspin_3d.render(stallspin_3d.payload(meta, points), back_href=out.name), encoding="utf-8")
+        out.write_text(render_run(pl, threed_href=out3d.name), encoding="utf-8")
         built.append((meta.get("aircraft_title") or peek_title(run), out, pl))
         print(f"{out}  ({len(points)} points, {out.stat().st_size // 1024} KB)")
     page = cfg.reports_dir / "stall-spin.html"
@@ -255,7 +260,7 @@ RUN_PAGE = r"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <p class="note">Signs: pitch + nose up, bank + right wing down, rotation + clockwise seen from above (right). Rotation is about the
 vertical axis (body rates projected), which counts spin turns correctly near vertical. In a flat spin the indicated
 airspeed is meaningless. Vertical lines mark detected events: W warning, A yoke full aft, P peak AoA, D departure,
-R pro-spin rudder, Y yoke forward, O opposite rudder, S rotation stopped, L level.</p></div>
+R pro-spin rudder, Y yoke forward, O opposite rudder, S rotation stopped, L level.</p>%%THREED%%</div>
 <div id="points"></div>
 <p class="note"><a href="%%BACK%%">All aircraft compared</a></p>
 </main>

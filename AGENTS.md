@@ -39,7 +39,8 @@ python scripts/fetch_sources.py                       # download reference manua
   - `polar_report.py`: polars page
   - `stallspin.py`: stall/spin event detection and measurements per test point (meta `segments` with a `point`)
   - `stallspin_report.py`: per-aircraft stall/spin pages and the comparison page
-  - `vendor/`: uPlot, MIT
+  - `stallspin_3d.py`: 3D view per aircraft (three.js r147, vendored; URL `#p=<point>&t=<s>`)
+  - `vendor/`: uPlot 1.6.30 and three.js r147 (+ OrbitControls), both MIT, embedded with their notices
 - `scripts/`: recorder (`simconnect_probe.py`), text view, example builder, manual fetcher
 - `data/polars/*.json`: one polar per aircraft, matched to the sim's `TITLE` by `match_titles`
 - `data/baselines/msfs2024-<build>/<aircraft>/runs/`: kept recordings (`.jsonl` + `.meta.json`)
@@ -96,4 +97,4 @@ The sim usually runs on the same machine, so you can read it directly.
 
 - **`python -I`** ignores `PYTHONIOENCODING`. Call `sys.stdout.reconfigure(encoding="utf-8")` when printing non-ASCII on Windows.
 - **Windows can't convert timestamps near 1970 to local time.** Tests use realistic times.
-- **No Node**: render and screenshot pages with headless Edge (`--headless=new --screenshot=... --virtual-time-budget=3000`).
+- **No Node**: render and screenshot pages with headless Edge (`--headless=new --screenshot=... --virtual-time-budget=3000`). For WebGL (3D pages) add `--use-angle=swiftshader --enable-unsafe-swiftshader`. `msedge.exe` can return before the PNG is written: wait for the file.

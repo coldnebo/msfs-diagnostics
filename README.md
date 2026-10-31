@@ -45,7 +45,7 @@ The same approach, applied to powered aircraft: one test card ([doc/TESTCARD-sta
 
 ![stalls and spins compared](examples/img/stall-spin.png)
 
-Details: [examples/stall-spin.html](https://coldnebo.github.io/msfs-diagnostics/examples/stall-spin.html), [design/stall-spin/PLAN.md](design/stall-spin/PLAN.md).
+Details: [examples/stall-spin.html](https://coldnebo.github.io/msfs-diagnostics/examples/stall-spin.html), a [3D view of the Comanche's flat spin](https://coldnebo.github.io/msfs-diagnostics/examples/stall-spin-a2a-pa24-250-3d.html#p=1&t=16), [design/stall-spin/PLAN.md](design/stall-spin/PLAN.md).
 
 ## use
 
@@ -102,4 +102,4 @@ Code changes work in phases (see [design/PLAN.md](design/PLAN.md)): discuss, imp
 
 ## license
 
-MIT. Reference manuals in `data/sources/` belong to their publishers and aren't redistributed here; `fetch_sources.py` downloads them from the original hosts. The reports embed [uPlot](https://github.com/leeoniya/uPlot) (MIT), with its notice.
+MIT. Reference manuals in `data/sources/` belong to their publishers and aren't redistributed here; `fetch_sources.py` downloads them from the original hosts. The reports embed [uPlot](https://github.com/leeoniya/uPlot) and the 3D views [three.js](https://threejs.org) (both MIT), with their notices.

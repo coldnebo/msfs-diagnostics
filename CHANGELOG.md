@@ -2,6 +2,18 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com); versions follow [semver](https://semver.org).
 
+## [0.8.0] - 2026-10-31
+
+### added
+
+- 3D view per stall/spin run (`msfsdiag.analysis.stallspin_3d`): recorded path at true scale with an aircraft flown along it at the recorded pitch, bank and heading; point picker, play/pause, speed, scrubber, follow camera, live readout; URL `#p=<point>&t=<s>` keeps the moment. three.js r147 + OrbitControls (MIT) vendored, so pages work offline.
+- aircraft pages link their 3D view; examples include the three 3D pages, with a landing card opening the Comanche mid-spin.
+- heading in the normalised stall/spin samples.
+
+### changed
+
+- example screenshots use software WebGL and support URL fragments.
+
 ## [0.7.2] - 2026-10-31
 
 ### changed

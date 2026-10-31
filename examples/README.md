@@ -103,6 +103,13 @@ One card per test point: a summary, then charts of angles, rotation rate, airspe
 - [stall-spin-wbsim-c152.html](stall-spin-wbsim-c152.html)
 - [stall-spin-a2a-pa24-250.html](stall-spin-a2a-pa24-250.html): on the spin cards the rotation keeps going past **Y** and stops only after **O**.
 
+### spins in 3D
+
+Each aircraft page links a 3D view: the recorded path at true scale with the aircraft flown along it at its recorded attitude. Play, scrub, orbit, and share a moment by URL.
+
+- [Comanche, first spin, 16 s in](stall-spin-a2a-pa24-250-3d.html#p=1&t=16): nose 48° down, rotating 186°/s
+- [C172](stall-spin-asobo-c172sp-classic-3d.html) · [C152](stall-spin-wbsim-c152-3d.html)
+
 ## caveats
 
 - **AS 33 polar points are provisional.** They were read by eye from a chart the manufacturer marks "preliminary estimate".

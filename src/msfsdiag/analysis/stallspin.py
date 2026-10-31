@@ -9,6 +9,7 @@ Signs are normalised here (MSFS raw values in brackets):
   bank   + right wing down (bank_deg + = left wing down)
   roll   + rolling right   (p_dps + = rolling left)
   yaw    + yawing right    (r_dps, unchanged)
+  hdg    true heading, deg (unchanged)
   rot    rotation about the vertical, + clockwise seen from above (right).
          from body rates projected on the vertical; heading is useless near
          vertical and body yaw/roll split a spin's rotation between them.
@@ -49,7 +50,8 @@ def norm(r):
         "t": r["t"], "paused": bool(r.get("paused")), "on_ground": bool(r.get("on_ground")),
         "lat": r.get("lat"), "lon": r.get("lon"),
         "ias": r["ias_kt"], "aoa": r["aoa_deg"], "beta": _num(r.get("beta_deg")),
-        "pitch": -r["pitch_deg"], "bank": -r["bank_deg"], "roll": p, "yaw": rr, "rot": rot,
+        "pitch": -r["pitch_deg"], "bank": -r["bank_deg"], "hdg": _num(r.get("hdg_true")),
+        "roll": p, "yaw": rr, "rot": rot,
         "g": _num(r.get("g")), "alt": r["alt_ft"], "vs": _num(r.get("vs_fpm")),
         "yoke": _num(r.get("yoke_y")) or 0.0, "ail": _num(r.get("yoke_x")) or 0.0, "ped": _num(r.get("pedals")) or 0.0,
         "thr": _num(r.get("throttle")), "rpm": _num(r.get("prop_rpm")),
