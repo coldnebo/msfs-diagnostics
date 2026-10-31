@@ -2,6 +2,13 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com); versions follow [semver](https://semver.org).
 
+## [0.7.2] - 2026-10-31
+
+### changed
+
+- examples landing page: sections per project, a preview thumbnail for every page (`examples/img/thumb/`, 16:10 at half scale, ~40 KB each), links to every doc on GitHub.
+- `build_examples.py --screenshots` waits for Edge to finish writing each PNG.
+
 ## [0.7.1] - 2026-10-31
 
 ### added
