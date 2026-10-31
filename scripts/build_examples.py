@@ -15,6 +15,8 @@ from pathlib import Path
 
 from msfsdiag import __version__
 from msfsdiag.analysis import polar, polar_report, report
+from msfsdiag.analysis import stallspin as ss
+from msfsdiag.analysis import stallspin_report as ssr
 from msfsdiag.config import load as load_config
 
 BUILD = "msfs2024-12.2.282174.999"
@@ -81,11 +83,52 @@ def build(out_dir: Path):
         print(f"{out}  ({len(legs)} steady legs)")
     print(p)
 
+    cards += build_stallspin(cfg, out_dir)
     body = "\n".join(f'<div class="card"><h2><a href="{html.escape(f)}">{html.escape(t)}</a></h2>'
                      f"<p>{html.escape(w)}</p></div>" for f, t, w in cards)
     (out_dir / "index.html").write_text(INDEX.replace("%%CARDS%%", body).replace("%%VERSION%%", __version__),
                                         encoding="utf-8")
     print(out_dir / "index.html")
+
+
+def build_stallspin(cfg, out_dir):
+    """Stall/spin comparison + one page per aircraft. Needs the local 60 Hz recordings
+    (not in git); without them the existing stall/spin examples are kept."""
+    runs = ssr.ordered_runs(cfg.data_dir / "baselines")
+    if not runs:
+        print("no stall-spin recordings found locally; keeping existing stall/spin examples")
+        return [(f.name, *STALLSPIN_CARDS.get(f.name, (f.stem, ""))) for f in sorted(out_dir.glob("stall-spin*.html"))]
+    built = []
+    for run in runs:
+        meta, points = ss.analyze(run)
+        name = "stall-spin-" + run.parent.parent.name + ".html"
+        pl = ssr.run_payload(run, meta, points)
+        (out_dir / name).write_text(ssr.render_run(pl, back_href="stall-spin.html"), encoding="utf-8")
+        built.append((meta.get("aircraft_title"), name, pl))
+        print(out_dir / name)
+    (out_dir / "stall-spin.html").write_text(ssr.compare_page(built), encoding="utf-8")
+    print(out_dir / "stall-spin.html")
+    return [("stall-spin.html", *STALLSPIN_CARDS["stall-spin.html"])] + \
+        [(n, *STALLSPIN_CARDS.get(n, (a, ""))) for a, n, _ in built]
+
+
+STALLSPIN_CARDS = {
+    "stall-spin.html": ("Stalls and spins: C172, C152 and Comanche compared",
+                        "Second project: the same stall/spin test card in three aircraft, recorded at 60 Hz. "
+                        "Spin rate, height per turn, AoA in the spin, and what it takes to stop the rotation."),
+    "stall-spin-asobo-c172sp-classic.html": (
+        "C172SP Classic: stalls and spins",
+        "Wings-level mush in the clean stall; a steep spin at 2.5-2.8 s per turn that stops as soon as the yoke goes "
+        "forward."),
+    "stall-spin-wbsim-c152.html": (
+        "WBSim C152: stalls and spins",
+        "A clean pitch break; clean spins drift into a spiral (AoA ~16°, airspeed and g climbing). One full-flap entry "
+        "rolled against the rudder."),
+    "stall-spin-a2a-pa24-250.html": (
+        "A2A Comanche 250: stalls and spins",
+        "Wing drops of up to 92° at the break; a fast, flat spin (~2 s per turn, AoA 44-53°) that keeps going with the yoke "
+        "eased and stops only with opposite rudder."),
+}
 
 
 def screenshots(out_dir: Path):
@@ -98,7 +141,9 @@ def screenshots(out_dir: Path):
     img.mkdir(exist_ok=True)
     shots = [("polars.html", "polars.png", (1300, 1650)),
              ("dg1001e-ridge-and-thermals.html", "dg1001e-ridge-and-thermals.png", (1300, 1520)),
-             ("as33me-ridge-flaps.html", "as33me-ridge-flaps.png", (1300, 900))]
+             ("as33me-ridge-flaps.html", "as33me-ridge-flaps.png", (1300, 900)),
+             ("stall-spin.html", "stall-spin.png", (1300, 1080)),
+             ("stall-spin-a2a-pa24-250.html", "stall-spin-a2a-pa24-250.png", (1300, 1700))]
     for page, png, (w, h) in shots:
         subprocess.run([str(edge), "--headless=new", "--disable-gpu", "--hide-scrollbars",
                         "--blink-settings=preferredColorScheme=1", f"--window-size={w},{h}",

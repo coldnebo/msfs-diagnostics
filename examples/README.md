@@ -74,6 +74,35 @@ India at sim noon, 1 am in real life.
 
 The bands on the timeline mark each switch.
 
+## stalls and spins (second project)
+
+The same stall/spin test card ([doc/TESTCARD-stall-spin.md](../doc/TESTCARD-stall-spin.md)) flown in three aircraft over KIZA, recorded at 60 Hz. These pages show each test point's window only, thinned to 20 Hz. The raw recordings (115-172 MB per aircraft) stay with the pilot; the per-point measurements are committed in `data/baselines/.../results/`.
+
+### [stall-spin.html](stall-spin.html): C172, C152 and Comanche compared
+
+![stalls and spins compared](img/stall-spin.png)
+
+One dot per test point.
+
+| | C172SP Classic | WBSim C152 | A2A Comanche 250 |
+|---|---|---|---|
+| developed spin | 2.5-2.8 s and 260-345 ft per turn | 3.7-4.2 s and 480-515 ft per turn | **1.8-2.0 s** and 170-250 ft per turn |
+| AoA in the spin | ~30° (steep) | ~16-19°, airspeed climbing (**spiral-like**) | **44-53° (flat)**, 25° with flaps |
+| what stopped it | forward yoke, within 0.3-0.75 turn | forward yoke, within 0.3 turn | **opposite rudder**: 3.5-4.7 more turns with the yoke eased and rudder held, then 0.2-0.4 after opposite rudder |
+| clean stall, rudder neutral | wings-level mush | pitch break, 11° wing drop | pitch break, **wing drops of 9-92°** |
+
+These are measurements of the sim's flight models, not verdicts on the real aircraft. Comparing them with the POHs is the next step.
+
+### per aircraft
+
+![Comanche stalls and spins](img/stall-spin-a2a-pa24-250.png)
+
+One card per test point: a summary, then charts of angles, rotation rate, airspeed, altitude, bank and control inputs, with the detected events marked: W warning, A yoke full aft, P peak AoA, D departure, R pro-spin rudder, Y yoke forward, O opposite rudder, S rotation stopped, L level.
+
+- [stall-spin-asobo-c172sp-classic.html](stall-spin-asobo-c172sp-classic.html)
+- [stall-spin-wbsim-c152.html](stall-spin-wbsim-c152.html)
+- [stall-spin-a2a-pa24-250.html](stall-spin-a2a-pa24-250.html): on the spin cards the rotation keeps going past **Y** and stops only after **O**.
+
 ## caveats
 
 - **AS 33 polar points are provisional.** They were read by eye from a chart the manufacturer marks "preliminary estimate".

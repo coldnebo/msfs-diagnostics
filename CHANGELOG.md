@@ -2,6 +2,12 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com); versions follow [semver](https://semver.org).
 
+## [0.7.1] - 2026-10-31
+
+### added
+
+- examples: stall/spin comparison and per-aircraft pages, screenshots, README sections (rebuilding them needs the local recordings; without them the build keeps the existing pages).
+
 ## [0.7.0] - 2026-10-31
 
 ### added

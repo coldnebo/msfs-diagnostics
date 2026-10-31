@@ -63,13 +63,14 @@ def run_payload(run_path, meta, points):
     }
 
 
-def render_run(payload):
+def render_run(payload, back_href="../../../stall-spin.html"):
     css = (VENDOR / "uPlot.min.css").read_text(encoding="utf-8")
     lic = (VENDOR / "uPlot.LICENSE").read_text(encoding="utf-8").replace("*/", "* /")
     js = "/*\n" + lic + "*/\n" + (VENDOR / "uPlot.iife.min.js").read_text(encoding="utf-8")
     blob = json.dumps(payload, separators=(",", ":")).replace("</", "<\\/")
     return (RUN_PAGE.replace("%%TITLE%%", html.escape(payload["aircraft"] or payload["name"]))
-            .replace("%%UPLOT_CSS%%", css).replace("%%UPLOT_JS%%", js).replace("%%DATA%%", blob))
+            .replace("%%UPLOT_CSS%%", css).replace("%%UPLOT_JS%%", js).replace("%%DATA%%", blob)
+            .replace("%%BACK%%", html.escape(back_href)))
 
 
 # ---------- comparison page (inline SVG dot plots)
@@ -175,15 +176,19 @@ def compare_page(runs):
             .replace("%%ROWS%%", "".join(table)).replace("%%VERSION%%", __version__))
 
 
+def ordered_runs(base):
+    """Stall-spin runs in the order flown (first test point time), not alphabetically."""
+    def first_time(run):
+        meta = json.loads(ss.meta_path(run).read_text(encoding="utf-8"))
+        return (meta.get("split_from", ""), min((g["from"] for g in meta.get("segments", [])), default=""))
+    return sorted(stallspin_runs(base), key=first_time)
+
+
 def main():
     cfg = load_config()
     base = cfg.data_dir / "baselines"
     built = []
-    # order runs by the first test point's time (the order flown), not alphabetically
-    def first_time(run):
-        meta = json.loads(ss.meta_path(run).read_text(encoding="utf-8"))
-        return (meta.get("split_from", ""), min((g["from"] for g in meta.get("segments", [])), default=""))
-    for run in sorted(stallspin_runs(base), key=first_time):
+    for run in ordered_runs(base):
         meta, points = ss.analyze(run)
         res_dir = run.parent.parent / "results"
         res_dir.mkdir(exist_ok=True)
@@ -252,7 +257,7 @@ vertical axis (body rates projected), which counts spin turns correctly near ver
 airspeed is meaningless. Vertical lines mark detected events: W warning, A yoke full aft, P peak AoA, D departure,
 R pro-spin rudder, Y yoke forward, O opposite rudder, S rotation stopped, L level.</p></div>
 <div id="points"></div>
-<p class="note"><a href="../../../stall-spin.html">All aircraft compared</a></p>
+<p class="note"><a href="%%BACK%%">All aircraft compared</a></p>
 </main>
 <script>%%UPLOT_JS%%</script>
 <script type="application/json" id="data">%%DATA%%</script>

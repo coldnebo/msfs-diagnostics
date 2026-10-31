@@ -35,11 +35,24 @@ Details in [design/WORKLOG.md](design/WORKLOG.md).
 
 ![AS 33 Me ridge run](examples/img/as33me-ridge-flaps.png)
 
+## second project: stalls and spins
+
+The same approach, applied to powered aircraft: one test card ([doc/TESTCARD-stall-spin.md](doc/TESTCARD-stall-spin.md)) flown in the Asobo C172SP Classic, the WBSim C152 and the A2A Comanche 250, recorded at 60 Hz. The analysis detects each point's events and measures the spin turn by turn. In the sim:
+
+- the C172 spins steep and stops on forward yoke
+- the C152 drifts into a spiral
+- the Comanche spins fast and flat and needs opposite rudder
+
+![stalls and spins compared](examples/img/stall-spin.png)
+
+Details: [examples/stall-spin.html](https://coldnebo.github.io/msfs-diagnostics/examples/stall-spin.html), [design/stall-spin/PLAN.md](design/stall-spin/PLAN.md).
+
 ## use
 
 ```
-python scripts/simconnect_probe.py --out data/raw/test.jsonl --note "what you're testing"   # record (Ctrl+C to stop)
-python -m msfsdiag.analysis.report --all                                                    # build reports/
+python -m msfsdiag.telemetry.recorder --out data/raw/test.jsonl.gz --note "what you're testing"   # record at ~60 Hz (Ctrl+C to stop)
+python -m msfsdiag.analysis.report --all                                                    # glider reports
+python -m msfsdiag.analysis.stallspin_report                                                # stall/spin reports
 ```
 
 How to fly for clean data, mark moments, keep runs and read the reports: [doc/GUIDE.md](doc/GUIDE.md). Recording format: [doc/TELEMETRY.md](doc/TELEMETRY.md).
