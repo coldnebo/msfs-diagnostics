@@ -10,7 +10,7 @@ Tools to check whether a glider sim's lift reaches the glider. A recorder sample
 - the glider's total-energy climb rate
 - a prediction from the glider's published polar
 
-Status and findings so far: top of [design/WORKLOG.md](design/WORKLOG.md). Plan and hypotheses: [design/PLAN.md](design/PLAN.md). Original brief: [design/INSTRUCTIONS.md](design/INSTRUCTIONS.md).
+Projects: gliders (lift; done, see [design/PLAN.md](design/PLAN.md)) and stall/spin comparison ([design/stall-spin/PLAN.md](design/stall-spin/PLAN.md), test card [doc/TESTCARD-stall-spin.md](doc/TESTCARD-stall-spin.md)). Status and findings: top of [design/WORKLOG.md](design/WORKLOG.md). Plan and hypotheses: [design/PLAN.md](design/PLAN.md). Original brief: [design/INSTRUCTIONS.md](design/INSTRUCTIONS.md).
 
 ## commands
 
@@ -19,8 +19,9 @@ Windows; the venv is `.venv` (use `.venv/Scripts/python` from Git Bash).
 ```
 pip install -e .[dev,record]                          # record = SimConnect (recorder only)
 pytest                                                # all tests; keep them passing
-python scripts/simconnect_probe.py --once             # one sample from the running sim, all fields
-python scripts/simconnect_probe.py --out data/raw/<date>_<name>.jsonl --note "..."   # record
+python -m msfsdiag.telemetry.recorder --once          # one sample from the running sim, all fields
+python -m msfsdiag.telemetry.recorder --out data/raw/<date>_<name>.jsonl --note "..."   # record (~60 Hz, every sim frame)
+python scripts/simconnect_probe.py --once             # older ~3 Hz probe (glider runs were recorded with it)
 python -m msfsdiag.analysis.report --all              # reports/ (gitignored): one page per baseline run + polars.html + index.html
 python scripts/steady_segments.py <run.jsonl>         # steady legs as text
 python scripts/build_examples.py --screenshots        # examples/ (committed); screenshots need Microsoft Edge
@@ -77,7 +78,7 @@ The sim usually runs on the same machine, so you can read it directly.
   - GotFriends AS 33: `FLAPS HANDLE INDEX` 4 = N; 6 reads 25° (landing range). Other indices are unmapped.
   - Each flap position only matches the polar in its own speed band.
 - **The DG polar is a parabola from two table points**, valid 70–130 km/h only.
-- **The recorder runs at ~2–3 Hz** (the PyPI `SimConnect` package makes one request per variable). Fine for legs, not for gusts.
+- **Sample rate**: `msfsdiag.telemetry.recorder` asks for one data definition every sim frame (~60 Hz). The older `scripts/simconnect_probe.py` (all glider runs) polls one variable at a time, ~2–3 Hz.
 
 ### the sim
 

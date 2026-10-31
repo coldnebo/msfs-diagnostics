@@ -1,6 +1,6 @@
 # telemetry format
 
-Written by `scripts/simconnect_probe.py`. Two files per run:
+Written by `msfsdiag.telemetry.recorder` (~60 Hz, every sim frame; full field list in `FIELDS` in `src/msfsdiag/telemetry/recorder.py`) or the older `scripts/simconnect_probe.py` (~2–3 Hz, the glider runs). Field keys are shared, so the analysis reads both. Two files per run:
 
 - `<name>.jsonl`: one JSON object per line, one line per sample (~2-3 Hz)
 - `<name>.meta.json`: notes about the run
@@ -39,6 +39,8 @@ Fields added later are missing from older runs (flaps from `ridge02`, sim clock 
 - While paused, values freeze and `air_w_ms` reads ~0.
 - The sim can also freeze without a pause event (menus, loading): position and altitude repeat exactly. The analysis treats exact repeats as frozen.
 - A slew shows as IAS 0 with large vertical speeds.
+
+The recorder adds, among others: `alt_ft`, `ias_kt`, `vs_fpm`, `aoa_deg` (INCIDENCE ALPHA), `beta_deg` (sideslip), `p_dps`/`q_dps`/`r_dps` (body roll/pitch/yaw rates), `g`, `stall_warn`, `stall_aoa_deg`, `ball`, pilot inputs `yoke_x`/`yoke_y`/`pedals`, surfaces `elevator`/`aileron`/`rudder`, `elev_trim`, engine `throttle`/`rpm`/`prop_rpm`/`map_inhg`, `weight_lb`, `cg_pct_mac`, `fuel_lb`, `oat_c`, `baro_inhg`, and `light_landing`/`light_taxi` (used as markers).
 
 ## meta fields
 
