@@ -2,7 +2,7 @@
 
 Written by `msfsdiag.telemetry.recorder` (~60 Hz, every sim frame; full field list in `FIELDS` in `src/msfsdiag/telemetry/recorder.py`) or the older `scripts/simconnect_probe.py` (~2–3 Hz, the glider runs). Field keys are shared, so the analysis reads both. Two files per run:
 
-- `<name>.jsonl`: one JSON object per line, one line per sample (~2-3 Hz)
+- `<name>.jsonl`: one JSON object per line, one line per sample
 - `<name>.meta.json`: notes about the run
 
 ## sample fields
