@@ -2,6 +2,14 @@
 
 Format based on [Keep a Changelog](https://keepachangelog.com); versions follow [semver](https://semver.org).
 
+## [0.6.0] - 2026-10-31
+
+### added
+
+- `msfsdiag.telemetry.recorder`: high-rate recorder (one data definition every sim frame, ~60 Hz) with stall/spin fields (AoA, sideslip, body rates, g, stall warning, control inputs and surfaces, engine, CG, gear, light markers); `--out *.jsonl.gz` writes gzip; values rounded.
+- stall/spin project: test card `doc/TESTCARD-stall-spin.md`, plan `design/stall-spin/PLAN.md`, first session notes for the C172, C152 and Comanche (recordings local only).
+- analysis reads `.jsonl.gz`; glider reports skip runs whose aircraft has no polar.
+
 ## [0.5.0] - 2026-10-30
 
 ### added

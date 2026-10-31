@@ -41,6 +41,7 @@ python scripts/fetch_sources.py                       # download reference manua
 - `data/polars/*.json`: one polar per aircraft, matched to the sim's `TITLE` by `match_titles`
 - `data/baselines/msfs2024-<build>/<aircraft>/runs/`: kept recordings (`.jsonl` + `.meta.json`)
 - `data/raw/`: scratch recordings (gitignored)
+- 60 Hz stall/spin runs (`*stall-spin*.jsonl[.gz]`) are gitignored for size and kept locally beside their committed `.meta.json`; record new sessions with `--out ....jsonl.gz`
 - `data/sources/sources.json`: catalog of manuals and type certificates (PDFs gitignored)
 
 ## rules
@@ -78,6 +79,7 @@ The sim usually runs on the same machine, so you can read it directly.
   - GotFriends AS 33: `FLAPS HANDLE INDEX` 4 = N; 6 reads 25° (landing range). Other indices are unmapped.
   - Each flap position only matches the polar in its own speed band.
 - **The DG polar is a parabola from two table points**, valid 70–130 km/h only.
+- **MSFS signs**: `pitch_deg` + = nose down, `bank_deg` + = left wing down, `p_dps` + = roll left, `r_dps` + = yaw right. Count spin turns from body rates projected on the vertical, not heading. IAS is meaningless in a flat spin.
 - **Sample rate**: `msfsdiag.telemetry.recorder` asks for one data definition every sim frame (~60 Hz). The older `scripts/simconnect_probe.py` (all glider runs) polls one variable at a time, ~2–3 Hz.
 
 ### the sim

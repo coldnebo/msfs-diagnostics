@@ -11,6 +11,7 @@ Derived per sample:
 - pred_climb_ms: air_w_ms − pred_sink_ms, what the glider should climb at
 """
 
+import gzip
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -32,8 +33,10 @@ class Run:
 
 def load(path, polars=(), te_window_s=2.5) -> Run:
     path = Path(path)
-    rows = [json.loads(line) for line in path.open(encoding="utf-8") if line.strip()]
-    meta_path = path.with_name(path.name.removesuffix(".jsonl") + ".meta.json")
+    opener = gzip.open if path.name.endswith(".gz") else open
+    with opener(path, "rt", encoding="utf-8") as f:
+        rows = [json.loads(line) for line in f if line.strip()]
+    meta_path = path.with_name(path.name.removesuffix(".gz").removesuffix(".jsonl") + ".meta.json")
     meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
 
     prev = None
@@ -67,6 +70,30 @@ def load(path, polars=(), te_window_s=2.5) -> Run:
             r["pred_sink_ms"] = r["pred_climb_ms"] = None
     run.polars_used = {t: (p.name if p else None) for t, p in run.polars_used.items()}
     return run
+
+
+def find_runs(directory):
+    """Recordings under a directory: *.jsonl and *.jsonl.gz."""
+    d = Path(directory)
+    return sorted([*d.rglob("*.jsonl"), *d.rglob("*.jsonl.gz")])
+
+
+def peek_title(path):
+    """Aircraft title of a run without loading it: from the .meta.json, else the first sample."""
+    path = Path(path)
+    meta_path = path.with_name(path.name.removesuffix(".gz").removesuffix(".jsonl") + ".meta.json")
+    if meta_path.exists():
+        title = json.loads(meta_path.read_text(encoding="utf-8")).get("aircraft_title")
+        if title:
+            return title
+    opener = gzip.open if path.name.endswith(".gz") else open
+    with opener(path, "rt", encoding="utf-8") as f:
+        return json.loads(f.readline()).get("title", "")
+
+
+def glider_runs(directory, polars):
+    """Runs whose aircraft has a polar (the glider analysis skips the others)."""
+    return [p for p in find_runs(directory) if for_title(polars, peek_title(p))]
 
 
 def _energy_height(r):

@@ -35,7 +35,7 @@ ML, MR, MT, MB = 58, 18, 14, 46
 def collect(baselines_dir: Path, polars):
     """{polar name: {"polar": Polar, "legs": [Leg]}} over every run under baselines_dir."""
     out = {}
-    for path in sorted(Path(baselines_dir).rglob("*.jsonl")):
+    for path in run_mod.glider_runs(baselines_dir, polars):
         r = run_mod.load(path, polars)
         # older runs didn't record flaps; their note may say where the lever was ("flaps were at index 6")
         noted = re.search(r"flaps? (?:were |was )?at index (\d+)", r.meta.get("note") or "", re.I)

@@ -1,0 +1,64 @@
+{
+  "tool": "msfsdiag.telemetry.recorder",
+  "tool_version": "0.5.0",
+  "rate": "sim frame, ~60 Hz",
+  "sim": {
+    "app": "SunRise",
+    "version": "12.2.282174.999",
+    "simconnect": "12.2.0.0",
+    "store_version": "1.9.21.0 (assumed unchanged from 2026-10-30)"
+  },
+  "site": "KIZA area (Santa Ynez, CA), field elevation 674 ft",
+  "weather": "pilot-set clear/calm; recorded wind 1-2 kt, OAT ~4 C at 6,000 ft",
+  "test_card": "doc/TESTCARD-stall-spin.md",
+  "split_from": "data/raw/2026-10-31_stall_c172sp.jsonl (one recorder session, split by aircraft title; lines unchanged)",
+  "sign_conventions": "raw MSFS: pitch_deg + = nose DOWN; bank_deg + = LEFT wing down; p_dps + = roll LEFT; r_dps + = yaw right; pedals/yoke_x + = right; yoke_y + = aft",
+  "markers": "landing light was not used as a marker; no pause markers between points. points are identified by time.",
+  "local_only": "the .jsonl is not in git (size); ask the pilot or re-record",
+  "aircraft_title": "C172SP Classic Passengers",
+  "mass_lb": 1900,
+  "segments": [
+    {
+      "from": "16:05:20",
+      "to": "16:06:12",
+      "point": "A",
+      "what": "power-off stall, flaps up, no rudder (pedals <= 0.2): wings-level mush, warning 55.6 kt / AoA 9.4"
+    },
+    {
+      "from": "16:06:40",
+      "to": "16:07:05",
+      "point": "-",
+      "what": "partial stall attempts, yoke <= 0.65"
+    },
+    {
+      "from": "16:08:00",
+      "to": "16:08:20",
+      "point": "A",
+      "what": "power-off stall, full aft, no rudder: mush"
+    },
+    {
+      "from": "16:08:56",
+      "to": "16:09:28",
+      "point": "C",
+      "what": "power-on stall, rudder neutral: departed into left spin ~1.9 turns (torque), recovered"
+    },
+    {
+      "from": "16:13:20",
+      "to": "16:13:48",
+      "point": "E",
+      "what": "spin left, power off, full left rudder: 2.1 turns"
+    },
+    {
+      "from": "16:16:55",
+      "to": "16:17:19",
+      "point": "F",
+      "what": "spin right, power off: 4.0 turns"
+    },
+    {
+      "from": "16:21:20",
+      "to": "16:22:20",
+      "point": "B",
+      "what": "full-flap power-off stall (warning 47.4 kt), then full-flap spin left 3.7 turns; rudder-only recovery ~1 turn, forward yoke stopped it"
+    }
+  ]
+}

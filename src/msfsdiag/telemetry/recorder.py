@@ -13,10 +13,12 @@ light, which a pilot can flip to mark a moment without touching the controls.
 usage:
   python -m msfsdiag.telemetry.recorder --once
   python -m msfsdiag.telemetry.recorder --out data/raw/<name>.jsonl --note "..." [--hz 30]
+  python -m msfsdiag.telemetry.recorder --out data/raw/<name>.jsonl.gz ...   # ~5x smaller
 """
 
 import argparse
 import collections
+import gzip
 import json
 import math
 import threading
@@ -72,6 +74,8 @@ FIELDS = [
     ("flap_idx", "FLAPS HANDLE INDEX", "number"),
     ("flap_l_deg", "TRAILING EDGE FLAPS LEFT ANGLE", "degrees"),
     ("spoilers", "SPOILERS HANDLE POSITION", "percent"),
+    ("gear_handle", "GEAR HANDLE POSITION", "bool"),
+    ("gear_pct", "GEAR TOTAL PCT EXTENDED", "percent"),
     # engine 1
     ("throttle", "GENERAL ENG THROTTLE LEVER POSITION:1", "percent"),
     ("rpm", "GENERAL ENG RPM:1", "rpm"),
@@ -159,12 +163,22 @@ class Recorder(SimConnect):
         return v.decode(errors="replace").rstrip("\x00") if isinstance(v, bytes) else v
 
 
+# decimals kept per field: full float64 repr made 60 Hz files ~1.5 KB/row
+DECIMALS = {"lat": 7, "lon": 7, "sim_local_s": 2, "sim_zulu_s": 2}
+DEFAULT_DECIMALS = 4
+
+
 def to_row(t, vals, paused, title):
     row = {"t": round(t, 3), "paused": paused}
     for (k, _, _), v in zip(FIELDS, vals):
-        row[k] = v if math.isfinite(v) else None
+        row[k] = round(v, DECIMALS.get(k, DEFAULT_DECIMALS)) if math.isfinite(v) else None
     row["title"] = title
     return row
+
+
+def meta_path(out):
+    """<name>.jsonl[.gz] -> <name>.meta.json"""
+    return out.removesuffix(".gz").removesuffix(".jsonl") + ".meta.json"
 
 
 def fmt(r):
@@ -209,12 +223,14 @@ def main(argv=None):
                 "started": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "sim": sm.sim_info, "aircraft_title": title,
                 "note": args.note, "rate": "sim frame" + (f", max {args.hz:g} Hz" if args.hz else ""),
                 "vars": {k: [n, u] for k, n, u in FIELDS}}
-        with open(args.out.removesuffix(".jsonl") + ".meta.json", "w", encoding="utf-8") as f:
+        with open(meta_path(args.out), "w", encoding="utf-8") as f:
             json.dump(meta, f, indent=2)
-        out = open(args.out, "a", encoding="utf-8", buffering=1)
+        # plain files are line-buffered; gzip is flushed about once a second (see below)
+        out = (gzip.open(args.out, "at", encoding="utf-8") if args.out.endswith(".gz")
+               else open(args.out, "a", encoding="utf-8", buffering=1))
 
     min_dt = 1.0 / args.hz if args.hz else 0.0
-    last_w = last_p = 0.0
+    last_w = last_p = last_flush = 0.0
     n_written, t0 = 0, None
     try:
         while True:
@@ -232,6 +248,9 @@ def main(argv=None):
             if out:
                 out.write(json.dumps(row, separators=(",", ":")) + "\n")
             n_written += 1
+            if t - last_flush >= 1.0 and out:
+                out.flush()
+                last_flush = t
             if t - last_p >= args.print_every:
                 rate = n_written / max(t - t0, 1.0)
                 print(f"{fmt(row)}  [{rate:4.1f} Hz]", flush=True)

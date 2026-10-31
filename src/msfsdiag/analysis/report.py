@@ -68,7 +68,7 @@ def payload(run, legs):
                 for r in rows]
 
     return {
-        "name": run.path.stem,
+        "name": run.path.name.removesuffix(".gz").removesuffix(".jsonl"),
         "tool_version": __version__,
         "meta": run.meta,
         "polars": run.polars_used,
@@ -125,11 +125,12 @@ def build(run_path, out_path, polars):
 
 def _out_for(run_path, cfg):
     p = Path(run_path).resolve()
+    stem = p.name.removesuffix(".gz").removesuffix(".jsonl")
     try:
-        rel = p.relative_to((cfg.data_dir / "baselines").resolve())
-        return cfg.reports_dir / rel.with_suffix(".html")
+        rel = p.parent.relative_to((cfg.data_dir / "baselines").resolve())
+        return cfg.reports_dir / rel / (stem + ".html")
     except ValueError:
-        return cfg.reports_dir / (p.stem + ".html")
+        return cfg.reports_dir / (stem + ".html")
 
 
 def _write_index(reports_dir, built):
@@ -143,14 +144,14 @@ def _write_index(reports_dir, built):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("runs", nargs="*", help="recording .jsonl files")
-    ap.add_argument("--all", action="store_true", help="every run under data/baselines")
+    ap.add_argument("--all", action="store_true", help="every glider run (aircraft with a polar) under data/baselines")
     args = ap.parse_args(argv)
 
     cfg = load_config()
     polars = polar_mod.load_polars(cfg.data_dir / "polars")
     runs = [Path(p) for p in args.runs]
     if args.all:
-        runs += sorted((cfg.data_dir / "baselines").rglob("*.jsonl"))
+        runs += run_mod.glider_runs(cfg.data_dir / "baselines", polars)
     if not runs:
         ap.error("give run files or --all")
 

@@ -1,0 +1,64 @@
+{
+  "tool": "msfsdiag.telemetry.recorder",
+  "tool_version": "0.5.0",
+  "rate": "sim frame, ~60 Hz",
+  "sim": {
+    "app": "SunRise",
+    "version": "12.2.282174.999",
+    "simconnect": "12.2.0.0",
+    "store_version": "1.9.21.0 (assumed unchanged from 2026-10-30)"
+  },
+  "site": "KIZA area (Santa Ynez, CA), field elevation 674 ft",
+  "weather": "pilot-set clear/calm; recorded wind 1-2 kt, OAT ~4 C at 6,000 ft",
+  "test_card": "doc/TESTCARD-stall-spin.md",
+  "split_from": "data/raw/2026-10-31_stall_c172sp.jsonl (one recorder session, split by aircraft title; lines unchanged)",
+  "sign_conventions": "raw MSFS: pitch_deg + = nose DOWN; bank_deg + = LEFT wing down; p_dps + = roll LEFT; r_dps + = yaw right; pedals/yoke_x + = right; yoke_y + = aft",
+  "markers": "landing light was not used as a marker; no pause markers between points. points are identified by time.",
+  "local_only": "the .jsonl is not in git (size); ask the pilot or re-record",
+  "aircraft_title": "Cessna 152 WBSim Blue Metal",
+  "mass_lb": 1490,
+  "segments": [
+    {
+      "from": "16:24:06",
+      "to": "16:26:50",
+      "point": "-",
+      "what": "aircraft loaded in the air; spurious stall warning at 16:24:35 during load; climb"
+    },
+    {
+      "from": "16:27:00",
+      "to": "16:27:34",
+      "point": "E",
+      "what": "spin left, power off, clean: 3 turns; spiral tendency after turn 1 (AoA ~16, IAS rising)"
+    },
+    {
+      "from": "16:31:35",
+      "to": "16:32:05",
+      "point": "E",
+      "what": "spin right, power off, clean: 3.5 turns; same spiral tendency"
+    },
+    {
+      "from": "16:37:20",
+      "to": "16:37:50",
+      "point": "C",
+      "what": "power-on stall, clean: mild left wing drop 17 deg, then full left rudder spin 2.25 turns"
+    },
+    {
+      "from": "16:40:30",
+      "to": "16:41:20",
+      "point": "B",
+      "what": "full flaps, full RIGHT rudder: skid, then LEFT roll-off ~0.8 turn left; hands-off phugoid after recovery"
+    },
+    {
+      "from": "16:49:10",
+      "to": "16:49:40",
+      "point": "B",
+      "what": "full flaps, spin right 2.3 turns (more spin-like: AoA ~19, steady speed)"
+    },
+    {
+      "from": "16:52:50",
+      "to": "16:53:10",
+      "point": "A",
+      "what": "power-off stall, clean, no rudder: pitch break, 11 deg left wing drop"
+    }
+  ]
+}

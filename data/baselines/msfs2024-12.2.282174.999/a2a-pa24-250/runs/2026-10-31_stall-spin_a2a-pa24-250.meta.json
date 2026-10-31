@@ -1,0 +1,59 @@
+{
+  "tool": "msfsdiag.telemetry.recorder",
+  "tool_version": "0.5.0",
+  "rate": "sim frame, ~60 Hz",
+  "sim": {
+    "app": "SunRise",
+    "version": "12.2.282174.999",
+    "simconnect": "12.2.0.0",
+    "store_version": "1.9.21.0 (assumed unchanged from 2026-10-30)"
+  },
+  "site": "KIZA area (Santa Ynez, CA), field elevation 674 ft",
+  "weather": "pilot-set clear/calm; recorded wind 1-2 kt, OAT ~4 C at 6,000 ft",
+  "test_card": "doc/TESTCARD-stall-spin.md",
+  "split_from": "data/raw/2026-10-31_stall_c172sp.jsonl (one recorder session, split by aircraft title; lines unchanged)",
+  "sign_conventions": "raw MSFS: pitch_deg + = nose DOWN; bank_deg + = LEFT wing down; p_dps + = roll LEFT; r_dps + = yaw right; pedals/yoke_x + = right; yoke_y + = aft",
+  "markers": "landing light was not used as a marker; no pause markers between points. points are identified by time.",
+  "local_only": "the .jsonl is not in git (size); ask the pilot or re-record",
+  "aircraft_title": "A2A Piper PA-24-250 Comanche",
+  "mass_lb": 2073,
+  "notes": "A2A reports throttle (max ~31%) and manifold pressure (< 8 inHg) via its own variables; standard ones unusable. prop_rpm looks valid. gear position not recorded (pilot: gear up except point B). spins are prohibited in the real POH.",
+  "segments": [
+    {
+      "from": "16:58:28",
+      "to": "16:58:55",
+      "point": "A",
+      "what": "power-off stall, clean, yoke 0.8: pitch break at AoA 12.9, 9 deg right"
+    },
+    {
+      "from": "17:00:40",
+      "to": "17:01:10",
+      "point": "E",
+      "what": "spin left, power off, clean: snap entry, 2 turns, then 4.7 flat turns with rudder held (yoke eased); opposite rudder stopped it"
+    },
+    {
+      "from": "17:04:20",
+      "to": "17:04:40",
+      "point": "C",
+      "what": "partial-power stall, rudder neutral: snapped left to 92 deg bank, no spin"
+    },
+    {
+      "from": "17:05:12",
+      "to": "17:05:52",
+      "point": "E",
+      "what": "power-on spin left: ~5 flat turns with rudder held; opposite rudder stopped it"
+    },
+    {
+      "from": "17:09:15",
+      "to": "17:09:50",
+      "point": "A+E",
+      "what": "stall with rudder neutral (right wing drop to 56 deg), then spin right 5.4 turns; opposite rudder stopped it"
+    },
+    {
+      "from": "17:12:28",
+      "to": "17:12:52",
+      "point": "B",
+      "what": "gear down (pilot), flaps 38 deg: spin right ~2.5 turns, steep (AoA 19-27, IAS ~55-60)"
+    }
+  ]
+}

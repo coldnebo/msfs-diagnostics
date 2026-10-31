@@ -16,3 +16,8 @@ config.local.json
 
 # generated reports (rebuild with: python -m msfsdiag.analysis.report --all)
 reports/**/*.html
+
+# 60 Hz stall/spin recordings are too large for git: kept locally next to their
+# committed .meta.json; derived per-point results are committed instead
+data/baselines/**/*stall-spin*.jsonl
+data/baselines/**/*stall-spin*.jsonl.gz

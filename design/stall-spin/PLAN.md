@@ -1,6 +1,6 @@
 # plan: stall and spin comparison
 
-status: phase 1 (profile and telemetry) started 2026-10-31.
+status: phase 1 done 2026-10-31 (first session, all three aircraft; see WORKLOG). next: phase 3 analysis; phase 2 sources still open.
 
 ## question
 

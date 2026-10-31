@@ -2,6 +2,35 @@
 
 issues and caveats found while carrying out the plan. newest first.
 
+## 2026-10-31: stall/spin session 1 (C172, C152, Comanche)
+
+KIZA area, ~4,400-7,900 ft, clear and calm. one 60 Hz recorder session, split by aircraft into `data/baselines/msfs2024-12.2.282174.999/{asobo-c172sp-classic,wbsim-c152,a2a-pa24-250}/runs/2026-10-31_stall-spin_*` (the .jsonl files are local only; the .meta.json lists every test point by time). first-pass numbers below are from ad-hoc scripts; phase 3 will recompute them with the analysis code.
+
+**recording**
+- the high-rate recorder ran at ~61 Hz (max gap 22 ms), but wrote 408 MB in 72 min (~1.2 KB/row, mostly repeated keys). now: values rounded, and `--out *.jsonl.gz` writes gzip (~5x smaller). the pilot chose to keep these runs out of git.
+- **MSFS sign conventions**: `pitch_deg` + = nose **down**; `bank_deg` + = **left** wing down; `p_dps` + = roll **left**; `r_dps` + = yaw right; `pedals`/`yoke_x` + = right; `yoke_y` + = aft. turns in a spin are counted from the rotation about the vertical axis (body rates projected), because heading is meaningless near vertical and body yaw/roll split the rotation.
+- **IAS collapses** at very high AoA/sideslip (Comanche flat spin: 2-35 kt shown) - use AoA and rates, not IAS, inside a spin.
+- **A2A Comanche**: standard throttle (max ~31%) and manifold pressure (< 8 inHg) are not usable; prop RPM is. gear position wasn't recorded (added to the recorder since).
+- **stall warning AoA**: C172 and C152 both trigger at 9.2-9.4 deg (looks like a shared sim default); the Comanche at 10.0 deg (A2A's own). the sim's `STALL ALPHA` reads 13.18 for both Cessnas, 14.32 for the Comanche.
+- pilot hardware: rudder axis reached ±1.00 only after the first few attempts (early tries peaked at +0.6 / −0.1).
+- no landing-light or pause markers were used; test points are identified by time in the meta.
+
+**findings (measurements of the sim, not verdicts on realism)**
+
+| | C172SP Classic (1,900 lb) | WBSim C152 (1,490 lb) | A2A Comanche 250 (2,073 lb) |
+|---|---|---|---|
+| warning, power off clean | 55.6 kt | 44.1 kt | 46-49 kt |
+| warning, full flaps | 47.4 kt | 38.2-39.4 kt | 42.1 kt |
+| clean stall, full aft, rudder neutral | wings-level mush, AoA ≤ 18°, ~9 s | pitch break to −15°, AoA 30°, 11° wing drop | pitch break, AoA ~13°, **wing drops 56-92°** |
+| power-on stall, rudder neutral | departed: rolled through inverted into a spin | 17° wing drop | snapped to 92° bank (partial power) |
+| developed spin, clean | 2.5-2.8 s/turn, ~340 ft/turn, AoA 27-32° | 3.5-3.9 s/turn, ~490 ft/turn, AoA ~16°, **IAS and g climbing (spiral-like)** | **~2.0 s/turn, ~205 ft/turn, AoA 37-74° (flat)**, IAS unreadable |
+| recovery | stops < 0.3 turn on forward yoke alone | stops < 0.1 turn on forward yoke | **keeps spinning with yoke eased while rudder held; stops ~0.4-0.6 turn after opposite rudder** |
+| full-flap spin | 2.5 s/turn; rudder-only recovery failed for ~1 turn, forward yoke stopped it | spin-like (AoA ~19°, steady speed); one entry rolled **opposite** to the rudder | steep, not flat: AoA 19-27°, IAS ~55-60 kt, ~200°/s |
+| left vs right | consistent | consistent | consistent |
+
+- pull-outs reached 2.5-3.3 g, 98-129 kt; several full-flap pull-outs exceeded the flap limit (C172 98 kt, C152 88-89 kt, Comanche 117 kt).
+- the C152's odd full-flap entry (16:40) vs the clean one (16:49): same rudder delay after full aft yoke (~0.7 s); the difference was the state when the rudder went in (already rolling right vs nose already falling with no roll).
+
 ## 2026-10-30: phase 1 conclusion
 
 **summary: no lift regression found in MSFS 2024 (store 1.9.21.0 / SimConnect 12.2.282174.999). the problems reported after SU7 trace to setup, plus a misleading visualization.**
